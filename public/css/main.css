@@ -1,0 +1,43 @@
+body{
+	font-family: "Helvetica Neue";
+}
+
+
+h1{
+	text-align: center;
+}
+
+#container{
+	width: 100%;
+	text-align: center;
+	max-width: 800px;
+	margin: 0 auto;
+
+}
+
+.year-list li{
+	display: inline-block;
+	width: 33%;
+}
+
+#parking-deck-list{
+	display: none;
+}
+
+#parking-deck-list > li{
+	margin: 10px 0;
+	padding: 10px;
+	border-radius: 10px;
+	background: rgba(0,0,0,0.8);
+
+}
+
+.year-list{
+	border-radius: 10px;
+	background: rgba(0,0,0,0.8);
+
+}
+
+#parking-deck-list li{
+	color: white;
+}
