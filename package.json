@@ -1,0 +1,30 @@
+{
+  "name": "avlpark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conantp/avlpark.git"
+  },
+  "keywords": [
+    "parking",
+    "asheville",
+    "avl",
+    "opendata"
+  ],
+  "author": "Patrick Conant",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/conantp/avlpark/issues"
+  },
+  "homepage": "https://github.com/conantp/avlpark#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "tabletop": "^1.4.2"
+  }
+}
