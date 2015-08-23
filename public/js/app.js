@@ -34,7 +34,7 @@ Date.prototype.getWeekNumber = function(){
   }
 
   function buildDayOfWeekAverage(){
-  	year = 2008;
+  	year = 2012;
 
   	while(year < 2016){
 	  	day = 0;
@@ -90,7 +90,7 @@ Date.prototype.getWeekNumber = function(){
   }
 
   function buildActiveData(){
-  	year = 2008;
+  	year = 2012;
 
 	for(column in processed_data["2015-1-0"]){
 		if(	column == "Date" || 

@@ -120,7 +120,7 @@ h2 {
   background: linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000', endColorstr='#cc666666', GradientType=1);
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000',endColorstr='#cc666666',GradientType=1);
-  height: 100px;
+  height: 50px;
   overflow: scroll;
 }
 #parking-deck-list li {
