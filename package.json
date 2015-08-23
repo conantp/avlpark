@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/conantp/avlpark#readme",
   "dependencies": {
+    "dateformat": "^1.0.11",
     "express": "^4.13.3",
     "tabletop": "^1.4.2"
   }
