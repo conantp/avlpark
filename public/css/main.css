@@ -254,13 +254,8 @@ h2 {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000', endColorstr='#cc666666', GradientType=1);
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000',endColorstr='#cc666666',GradientType=1);
 }
-#parking-deck-list > li {
-  margin-bottom: 20px;
-  padding: 10px 10px;
-  border-radius: 10px;
-  box-shadow: 1px -1px 10px rgba(0, 0, 0, 0.5);
-}
 .year-list {
+  margin-top: 10px;
   border-radius: 5px;
   background: -webkit-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
   background: -moz-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
@@ -269,10 +264,7 @@ h2 {
   background: linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000', endColorstr='#cc666666', GradientType=1);
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000',endColorstr='#cc666666',GradientType=1);
-  height: 50px;
-  overflow: scroll;
   text-align: center;
-  display: none;
 }
 .chart-container {
   margin-top: 10px;
@@ -285,12 +277,16 @@ h2 {
 .parking-deck {
   cursor: pointer;
   color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 1px -1px 10px rgba(0, 0, 0, 0.5);
 }
 .chart {
   background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   width: 100% !important;
-  height: 100px;
+  height: 200px;
   box-sizing: border-box;
   padding: 20px;
 }

@@ -33,8 +33,37 @@ Date.prototype.getWeekNumber = function(){
                      simpleSheet: false } )
   }
 
-  function buildDayOfWeekAverage(){
+  function buildMonthAverage(){
   	year = 2008;
+
+  	while(year < 2016){
+	  	month = 0;
+	  	while(month < 13){
+	  		for(index in data){
+	  			return;
+	  			if(	deck == "Date" || 
+	  				deck == "Day" || 
+	  				deck == "Week" || 
+	  				deck == "Month" || 
+	  				deck == "Year"){
+					continue;
+				}
+				value = parseFloat(processed_data[search_str][deck].replace("%", "") );
+
+				if(typeof active_data[deck][day] == "undefined"){
+					active_data[deck][day] = 0;
+					active_data[deck][day+"_count"] = 0;
+				}
+
+	  			active_data[deck][day] += value;
+	  			active_data[deck][day+"_count"]++;
+	  		}
+	  	}
+	}
+  }
+
+  function buildDayOfWeekAverage(){
+  	year = 2012;
 
   	while(year < 2016){
 	  	day = 0;
@@ -147,6 +176,7 @@ Date.prototype.getWeekNumber = function(){
     console.log(processed_data);
     buildActiveData();
     buildDayOfWeekAverage();
+    buildMonthAverage();
     renderData();
 
   }
@@ -197,7 +227,11 @@ Date.prototype.getWeekNumber = function(){
 	  		html += "<div class='score'>" + score + "</div>";
 	  		html += "<div>";
 		  		html += "<ul class='year-list'>";
+		  			i = 0;
 		  			for(year in active_data[deck]){
+		  				if(i++ > 3){
+		  					break;
+		  				}
 		  				if(typeof active_data[deck][year] == 'string'){
 			  				percent = active_data[deck][year];
 			  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
@@ -210,7 +244,7 @@ Date.prototype.getWeekNumber = function(){
 		  			}
 		  		html += "</ul>";
 		  		html += "<div class='chart-container'>";
-			  		html += "<canvas class='chart' width=\"100%\" height=\"100\"></canvas>";
+			  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
 		  		html += "</div>";
 	  		html += "</div>";
   		html += "</li>";
@@ -233,7 +267,7 @@ Date.prototype.getWeekNumber = function(){
 	    scaleShowHorizontalLines: true,
 
 	    //Boolean - Whether to show vertical lines (except Y axis)
-	    scaleShowVerticalLines: true,
+	    scaleShowVerticalLines: false,
 
 	    //Boolean - Whether the line is curved between points
 	    bezierCurve : true,
@@ -270,11 +304,11 @@ Date.prototype.getWeekNumber = function(){
 	    responsive: true,
 	        maintainAspectRatio: true,
 
-    // // scaleStartValue: 0,
-    // // scaleSteps: 10,
-    // // scaleStepWidth: Math.ceil(100 / 10),
+    scaleStartValue: 0,
+    scaleSteps: 2,
+    scaleStepWidth: Math.ceil(40 / 2),
 
-    // scaleOverride: true,
+    scaleOverride: true,
 
 	};
 
@@ -290,9 +324,23 @@ Date.prototype.getWeekNumber = function(){
 		    datasets: [
 		        {
 		            label: "My First dataset",
-		            fillColor: "rgba(0, 230, 0, 0.8)",
+		            fillColor: "rgba(255, 255, 255, 0.5)",
+		            strokeColor: "rgba(255, 255, 255, 1.0)",
+		            highlightFill: "rgba(255,255,255,0.7)",
+		            highlightStroke:  "rgba(255,255,255,1)",
+		            data: active_data[deck]['year_data']['2015']
+		        }
+		    ]
+		};
+
+		temp_data_2 = {
+		    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		    datasets: [
+		        {
+		            label: "My First dataset",
+		            fillColor: "rgba(120, 230, 120, 0.5)",
 		            strokeColor: "rgba(100, 255, 100, 1.0)",
-		            highlightFill: "rgba(255,255,255,1)",
+		            highlightFill: "rgba(255,255,255,0.7)",
 		            highlightStroke:  "rgba(255,255,255,1)",
 		            data: active_data[deck]['year_data']['2015']
 		        }
@@ -300,6 +348,7 @@ Date.prototype.getWeekNumber = function(){
 		};
 
 		chart_data.push(temp_data);
+		// chart_data.push(temp_data_2);
 	}
 
 	 
