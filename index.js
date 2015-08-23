@@ -57,9 +57,9 @@ app.get('/', function(request, response) {
 })
 
 app.listen(app.get('port'), function() {
-	    tabletop.init( { key: public_spreadsheet_url,
-                     callback: showInfo,
-                     simpleSheet: false } );
+	    // tabletop.init( { key: public_spreadsheet_url,
+     //                 callback: showInfo,
+     //                 simpleSheet: false } );
 
 
 
