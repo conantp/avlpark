@@ -361,8 +361,8 @@ Date.prototype.getWeekNumber = function(){
 	        maintainAspectRatio: true,
 
     scaleStartValue: 0,
-    scaleSteps: 2,
-    scaleStepWidth: Math.ceil(40 / 2),
+    scaleSteps: 4,
+    scaleStepWidth: Math.ceil(100 / 4),
 
     scaleOverride: true,
 
