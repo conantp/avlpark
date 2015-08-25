@@ -33,33 +33,88 @@ Date.prototype.getWeekNumber = function(){
                      simpleSheet: false } )
   }
 
+  var month_data = {};
+  var month_data_by_deck = {};
+
   function buildMonthAverage(){
-  	year = 2008;
+	for(index in data){
+		row = data[index];
 
-  	while(year < 2016){
-	  	month = 0;
-	  	while(month < 13){
-	  		for(index in data){
-	  			return;
-	  			if(	deck == "Date" || 
-	  				deck == "Day" || 
-	  				deck == "Week" || 
-	  				deck == "Month" || 
-	  				deck == "Year"){
-					continue;
-				}
-				value = parseFloat(processed_data[search_str][deck].replace("%", "") );
+	    var d = new Date(row.Date);
 
-				if(typeof active_data[deck][day] == "undefined"){
-					active_data[deck][day] = 0;
-					active_data[deck][day+"_count"] = 0;
-				}
+	    row_mo = d.getMonth();
+	    row_yr = d.getFullYear();
+	    row_dy = d.getDate();
 
-	  			active_data[deck][day] += value;
-	  			active_data[deck][day+"_count"]++;
-	  		}
-	  	}
+
+	    key = row_yr + "-" + row_mo;
+
+	    for(deck in row){
+				if(	deck == "Date" || 
+					deck == "Day" || 
+					deck == "Week" || 
+					deck == "Month" || 
+					deck == "Year"){
+				continue;
+			}
+
+			// otherwise, it's actually a deck
+
+			deck_row = row[deck];
+
+			value = parseFloat(deck_row.replace("%", "") );
+
+			if(value < 1){
+				continue;
+			}
+
+			if(typeof month_data[key] == "undefined"){
+				month_data[key] = {'decks' : {}};
+			}
+
+			if(typeof month_data[key]['decks'][deck] == "undefined"){
+				month_data[key]['decks'][deck] = {'sum' : 0, 'count' : 0, 'values' : {} };
+			}
+
+			month_data[key]['decks'][deck]['sum'] += value;
+			month_data[key]['decks'][deck]['count']++;
+			month_data[key]['decks'][deck]['values'][row_dy] = row;
+		}
 	}
+
+
+
+	for(key in month_data){
+		month = month_data[key];
+		for(deck_key in month['decks']){
+			deck = month['decks'][deck_key];
+
+			deck['average'] = deck['sum'] / deck['count'];
+		}
+	}
+
+	// Repeat the loop, build month data
+	for(key in month_data){
+		if(key.indexOf('2015-') !== 0 && key.indexOf('2014-') !== 0){
+			continue;
+		}
+		month = month_data[key];
+		for(deck_key in month['decks']){
+			deck = month['decks'][deck_key];
+
+			if(typeof month_data_by_deck[deck_key] == 'undefined'){
+				month_data_by_deck[deck_key] = {};
+			}
+
+			if(isNaN(deck['average']) ){
+				continue;
+			}
+
+			month_data_by_deck[deck_key][key] = deck['average'].toFixed(0);
+
+		}
+	}
+
   }
 
   function buildDayOfWeekAverage(){
@@ -111,7 +166,7 @@ Date.prototype.getWeekNumber = function(){
 
 			 	if(value > 0){
 					active_data[deck][dateString] = value.toFixed(2) + "%";
-					active_data[deck]['year_data'][year][day] = (100 - value).toFixed(2);
+					active_data[deck]['year_data'][year][day] = ( value).toFixed(2);
 			 	}
 				delete active_data[deck][day];
 				delete active_data[deck][day+"_count"];
@@ -173,7 +228,7 @@ Date.prototype.getWeekNumber = function(){
     	processed_data[formatDate(row.Date)] = row;
     }
 
-    console.log(processed_data);
+    // console.log(processed_data);
     buildActiveData();
     buildDayOfWeekAverage();
     buildMonthAverage();
@@ -245,6 +300,7 @@ Date.prototype.getWeekNumber = function(){
 		  		html += "</ul>";
 		  		html += "<div class='chart-container'>";
 			  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
+			  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
 		  		html += "</div>";
 	  		html += "</div>";
   		html += "</li>";
@@ -312,7 +368,68 @@ Date.prototype.getWeekNumber = function(){
 
 	};
 
+	var options2 = {
+
+	    ///Boolean - Whether grid lines are shown across the chart
+	    scaleShowGridLines : true,
+
+	    //String - Colour of the grid lines
+	    scaleGridLineColor : "rgba(255,255,255,0.2)",
+
+	    //Number - Width of the grid lines
+	    scaleGridLineWidth : 1,
+
+	    //Boolean - Whether to show horizontal lines (except X axis)
+	    scaleShowHorizontalLines: true,
+
+	    //Boolean - Whether to show vertical lines (except Y axis)
+	    scaleShowVerticalLines: false,
+
+	    //Boolean - Whether the line is curved between points
+	    bezierCurve : true,
+
+	    //Number - Tension of the bezier curve between points
+	    bezierCurveTension : 0.4,
+
+	    //Boolean - Whether to show a dot for each point
+	    pointDot : true,
+
+	    //Number - Radius of each point dot in pixels
+	    pointDotRadius : 4,
+
+	    //Number - Pixel width of point dot stroke
+	    pointDotStrokeWidth : 1,
+
+	    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+	    pointHitDetectionRadius : 20,
+
+	    //Boolean - Whether to show a stroke for datasets
+	    datasetStroke : true,
+
+	    //Number - Pixel width of dataset stroke
+	    datasetStrokeWidth : 3,
+
+	    //Boolean - Whether to fill the dataset with a colour
+	    datasetFill : true,
+
+	    //String - A legend template
+	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+
+	    ,    
+
+	    responsive: true,
+	        maintainAspectRatio: true,
+
+	    scaleStartValue: 0,
+	    scaleSteps: 4,
+	    scaleStepWidth: Math.ceil(100 / 4),
+
+	    scaleOverride: true,
+
+	};
+
 	chart_data = [];
+	chart_data2 = [];
 
 	// for(year in active_data["Civic Center"]['year_data']){
 	// 	chart_data.push(active_data["Civic Center"]['year_data'][year]);
@@ -334,7 +451,7 @@ Date.prototype.getWeekNumber = function(){
 		};
 
 		temp_data_2 = {
-		    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		    labels: ["14-Jan", "14-Feb", "14-Mar", "14-Apr", "14-May", "14-Jun", "14-Jul", "14-Aug", "14-Sep", "14-Oct", "14-Nov", "14-Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
 		    datasets: [
 		        {
 		            label: "My First dataset",
@@ -342,13 +459,13 @@ Date.prototype.getWeekNumber = function(){
 		            strokeColor: "rgba(100, 255, 100, 1.0)",
 		            highlightFill: "rgba(255,255,255,0.7)",
 		            highlightStroke:  "rgba(255,255,255,1)",
-		            data: active_data[deck]['year_data']['2015']
+		            data: month_data_by_deck[deck]
 		        }
 		    ]
 		};
 
 		chart_data.push(temp_data);
-		// chart_data.push(temp_data_2);
+		chart_data2.push(temp_data_2);
 	}
 
 	 
@@ -364,6 +481,15 @@ Date.prototype.getWeekNumber = function(){
 		// Get the context of the canvas element we want to select
 
 	  	myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chart_data[i++], options) );
+	
+	});
+
+	i = 0;
+	$(".chart2").each(function(){
+
+		// Get the context of the canvas element we want to select
+
+	  	myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data2[i++], options2) );
 	
 	});
 

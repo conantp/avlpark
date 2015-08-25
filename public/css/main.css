@@ -175,7 +175,7 @@ h1 span.project-name {
 }
 h1 {
   padding: 10px;
-  font-size: 1.4em;
+  font-size: 1.8em;
   text-align: center;
   border-bottom: 3px solid rgba(128, 255, 128, 0.9);
   /*text-shadow: 1px 1px 5px rgba(255,255,255,0.8);*/
@@ -282,13 +282,15 @@ h2 {
   border-radius: 10px;
   box-shadow: 1px -1px 10px rgba(0, 0, 0, 0.5);
 }
-.chart {
+.chart,
+.chart2 {
   background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   width: 100% !important;
   height: 200px;
   box-sizing: border-box;
   padding: 20px;
+  margin: 10px 0;
 }
 #footer {
   border-top: 3px solid rgba(128, 255, 128, 0.9);
