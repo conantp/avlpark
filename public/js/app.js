@@ -166,7 +166,7 @@ Date.prototype.getWeekNumber = function(){
 
 			 	if(value > 0){
 					active_data[deck][dateString] = value.toFixed(2) + "%";
-					active_data[deck]['year_data'][year][day] = ( value).toFixed(2);
+					active_data[deck]['year_data'][year][day] = (100 - value).toFixed(2);
 			 	}
 				delete active_data[deck][day];
 				delete active_data[deck][day+"_count"];
@@ -361,8 +361,8 @@ Date.prototype.getWeekNumber = function(){
 	        maintainAspectRatio: true,
 
     scaleStartValue: 0,
-    scaleSteps: 4,
-    scaleStepWidth: Math.ceil(100 / 4),
+    scaleSteps: 2,
+    scaleStepWidth: Math.ceil(40 / 2),
 
     scaleOverride: true,
 
