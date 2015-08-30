@@ -55,7 +55,7 @@ app.get('/', function(request, response) {
 
 	response.sendFile(__dirname + '/public/html/index.html');
 })
-
+ 
 app.listen(app.get('port'), function() {
 	    // tabletop.init( { key: public_spreadsheet_url,
      //                 callback: showInfo,
