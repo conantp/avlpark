@@ -25,8 +25,10 @@
   "homepage": "https://github.com/conantp/avlpark#readme",
   "dependencies": {
     "chart.js": "^1.0.2",
-    "dateformat": "^1.0.11",
+    "dateformat": "^1.0.12",
     "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "keen-js": "^3.3.0",
     "tabletop": "^1.4.2"
   }
 }
