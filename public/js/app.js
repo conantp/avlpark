@@ -1,9 +1,5 @@
 
  
-
-window.onload = function() { init() };
-
-  var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml?gid=809388972&single=true';
   var processed_data = {};
 
   var current_date = new Date();
@@ -11,11 +7,17 @@ window.onload = function() { init() };
   var current_day = false;
   var current_year = false;
   var current_week = false;
-  var active_data = {};
+  var month_data_by_deck = {};
+var myLineChart = [];
+// window.onload = function() { init() };
 
+function init() {
+	month_data_by_deck = active_data.month_data_by_deck;
+	delete active_data.month_data_by_deck;
+	setDateVars();
+	getKeenData();
 
-var tabletop;
-
+}
 
 Date.prototype.getWeekNumber = function(){
     var d = new Date(+this);
@@ -24,260 +26,193 @@ Date.prototype.getWeekNumber = function(){
     return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
 };
 
-
-  function init() {
-  	setDateVars();
-
-    Tabletop.init( { key: public_spreadsheet_url,
-                     callback: showInfo,
-                     simpleSheet: false } )
-  }
-
-  var month_data = {};
-  var month_data_by_deck = {};
-
-  function buildMonthAverage(){
-	for(index in data){
-		row = data[index];
-
-	    var d = new Date(row.Date);
-
-	    row_mo = d.getMonth();
-	    row_yr = d.getFullYear();
-	    row_dy = d.getDate();
+function setDateVars(){
+var d = new Date();
 
 
-	    key = row_yr + "-" + row_mo;
+current_day = d.getDay();
+current_week = d.getWeekNumber();
+current_year = d.getFullYear();
+}
 
-	    for(deck in row){
-				if(	deck == "Date" || 
-					deck == "Day" || 
-					deck == "Week" || 
-					deck == "Month" || 
-					deck == "Year"){
-				continue;
-			}
+function formatDate(date) {
+var d = new Date(date),
+    // month = '' + (d.getMonth() + 1),
+    // day = '' + d.getDate(),
+    year = d.getFullYear();
 
-			// otherwise, it's actually a deck
+// if (month.length < 2) month = '0' + month;
+// if (day.length < 2) day = '0' + day;
 
-			deck_row = row[deck];
+week = d.getWeekNumber();
+day = d.getDay();
 
-			value = parseFloat(deck_row.replace("%", "") );
 
-			if(value < 1){
-				continue;
-			}
+return [year, week, day].join('-');
+}
 
-			if(typeof month_data[key] == "undefined"){
-				month_data[key] = {'decks' : {}};
-			}
 
-			if(typeof month_data[key]['decks'][deck] == "undefined"){
-				month_data[key]['decks'][deck] = {'sum' : 0, 'count' : 0, 'values' : {} };
-			}
+function getKeenData(){
+	// Keen data passed into template
+	renderData();
+	renderKeenData();
+}
 
-			month_data[key]['decks'][deck]['sum'] += value;
-			month_data[key]['decks'][deck]['count']++;
-			month_data[key]['decks'][deck]['values'][row_dy] = row;
-		}
+function renderKeenData(){
+
+	chart_data3 = [];
+		var options3 = {
+
+	    ///Boolean - Whether grid lines are shown across the chart
+	    scaleShowGridLines : true,
+
+	    //String - Colour of the grid lines
+	    scaleGridLineColor : "rgba(255,255,255,0.2)",
+
+	    //Number - Width of the grid lines
+	    scaleGridLineWidth : 1,
+
+	    //Boolean - Whether to show horizontal lines (except X axis)
+	    scaleShowHorizontalLines: true,
+
+	    //Boolean - Whether to show vertical lines (except Y axis)
+	    scaleShowVerticalLines: false,
+
+	    //Boolean - Whether the line is curved between points
+	    bezierCurve : true,
+
+	    //Number - Tension of the bezier curve between points
+	    bezierCurveTension : 0.4,
+
+	    //Boolean - Whether to show a dot for each point
+	    pointDot : true,
+
+	    //Number - Radius of each point dot in pixels
+	    pointDotRadius : 4,
+
+	    //Number - Pixel width of point dot stroke
+	    pointDotStrokeWidth : 1,
+
+	    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+	    pointHitDetectionRadius : 20,
+
+	    //Boolean - Whether to show a stroke for datasets
+	    datasetStroke : true,
+
+	    //Number - Pixel width of dataset stroke
+	    datasetStrokeWidth : 3,
+
+	    //Boolean - Whether to fill the dataset with a colour
+	    datasetFill : true,
+
+	    //String - A legend template
+	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+
+	    ,    
+
+	    responsive: true,
+	        maintainAspectRatio: true,
+
+	    scaleStartValue: 0,
+	    scaleSteps: 10,
+	    scaleStepWidth: 30,
+
+	    scaleOverride: true,
+
+	};
+
+	for(deck in keen_data){
+		var keys = [];
+		for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
+
+		temp_data_3 = {
+		    labels: keys,
+		    datasets: [
+		        {
+		            label: "My First dataset",
+		            fillColor: "rgba(120, 230, 120, 0.5)",
+		            strokeColor: "rgba(100, 255, 100, 1.0)",
+		            highlightFill: "rgba(255,255,255,0.7)",
+		            highlightStroke:  "rgba(255,255,255,1)",
+		            data: keen_data[deck]
+		        }
+		    ]
+		};
+		chart_data3.push(temp_data_3);
 	}
+	
 
 
+	i = 0;
+	$(".chart3").each(function(){
 
-	for(key in month_data){
-		month = month_data[key];
-		for(deck_key in month['decks']){
-			deck = month['decks'][deck_key];
+		// Get the context of the canvas element we want to select
 
-			deck['average'] = deck['sum'] / deck['count'];
-		}
-	}
+	  	myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data3[i++], options3) );
+	
+	});
+}
 
-	// Repeat the loop, build month data
-	for(key in month_data){
-		if(key.indexOf('2015-') !== 0 && key.indexOf('2014-') !== 0){
-			continue;
-		}
-		month = month_data[key];
-		for(deck_key in month['decks']){
-			deck = month['decks'][deck_key];
+function checkForNewData(){
+	$.get("/data", function(data){ 
+		console.log(data); 
 
-			if(typeof month_data_by_deck[deck_key] == 'undefined'){
-				month_data_by_deck[deck_key] = {};
-			}
+		keen_data = data;
+		i = 0;
+		for(deck_key in data){
+	  		new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
 
-			if(isNaN(deck['average']) ){
-				continue;
-			}
+			$('li.parking-deck[data-deck-key="'+deck_key+'"]').find('.score').html(new_score);
+		
+			var keys = [];
+			for(var k in keen_data[deck_key]) keys.push(k.substr(11, 5));
 
-			month_data_by_deck[deck_key][key] = deck['average'].toFixed(0);
-
-		}
-	}
-
-  }
-
-  function buildDayOfWeekAverage(){
-  	year = 2012;
-
-  	while(year < 2016){
-	  	day = 0;
-	  	while(day < 7){
-		  	week = 0;
-		  	while(week <= 52){
-
-		  		search_str = year + "-" + week + "-" + day;
-
-		  		for(deck in processed_data[search_str]){
-		  			if(	deck == "Date" || 
-		  				deck == "Day" || 
-		  				deck == "Week" || 
-		  				deck == "Month" || 
-		  				deck == "Year"){
-						continue;
-					}
-					value = parseFloat(processed_data[search_str][deck].replace("%", "") );
-
-					if(typeof active_data[deck][day] == "undefined"){
-						active_data[deck][day] = 0;
-						active_data[deck][day+"_count"] = 0;
-					}
-
-		  			active_data[deck][day] += value;
-		  			active_data[deck][day+"_count"]++;
-		  		}
-
-		  		// active_data[year] = processed_data[search_str];
-
-		  		week++;
-		  	}
-
-	  		for(deck in active_data){
-				value = active_data[deck][day] / active_data[deck][day+"_count"];
-
-			 	dateString = year+"-"+day;//dateFormat(day, "dddd");
-
-			 	if(typeof active_data[deck]['year_data'] == 'undefined'){
-			 		active_data[deck]['year_data'] = {};
-			 	}
-			 	if(typeof active_data[deck]['year_data'][year] == 'undefined'){
-			 		active_data[deck]['year_data'][year] = {};
-			 	}
-
-			 	if(value > 0){
-					active_data[deck][dateString] = value.toFixed(2) + "%";
-					active_data[deck]['year_data'][year][day] = (100 - value).toFixed(2);
-			 	}
-				delete active_data[deck][day];
-				delete active_data[deck][day+"_count"];
-			}
-		  	day++;
-		}
-		year++;
-	}
-
-  }
-
-  function buildActiveData(){
-  	year = 2012;
-
-	for(column in processed_data["2015-1-0"]){
-		if(	column == "Date" || 
-			column == "Day" || 
-			column == "Week" || 
-			column == "Month" || 
-			column == "Year"){
-			continue;
+			myLineChart[i++].addData([parseInt(new_score)],keys.pop() );
 		}
 
-		active_data[column] = {};
-	}
+	  window.setTimeout(checkForNewData, 10000);
 
-  	while(year <= 2015){
-  		search_str = year + "-" + current_week + "-" + current_day;
-  		console.log(search_str);
+	});
+}
 
-  		for(column in processed_data[search_str]){
-  			if(	column == "Date" || 
-  				column == "Day" || 
-  				column == "Week" || 
-  				column == "Month" || 
-  				column == "Year"){
-				continue;
-			}
-			// if(processed_data[search_str][column] > 0){
-	  			active_data[column][year] = processed_data[search_str][column];
-			// }
-  		}
+function renderData(){
+  	$(".current-date").html(dateFormat(current_date, "dddd, mmmm dS") );
 
-  		// active_data[year] = processed_data[search_str];
+	// $("#parking-deck-list").before("<div id='chart3' width=\"100%\" height=\"800\" style='height: 800px'></div>");
 
-  		year++;
-  	}
-  	console.log(active_data);
-  }
-
-  function showInfo(data2, tabletop2) {
-    // alert("Successfully processed!")
-
-    tabletop = tabletop2;
-    data = tabletop.sheets("For App").all();	
-
-    for (index in data){
-    	row = data[index];
-    	processed_data[formatDate(row.Date)] = row;
-    }
-
-    // console.log(processed_data);
-    buildActiveData();
-    buildDayOfWeekAverage();
-    buildMonthAverage();
-    renderData();
-
-  }
-
-  function setDateVars(){
-    var d = new Date();
-
-
-    current_day = d.getDay();
-    current_week = d.getWeekNumber();
-    current_year = d.getFullYear();
-  }
-
-  function formatDate(date) {
-    var d = new Date(date),
-        // month = '' + (d.getMonth() + 1),
-        // day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    // if (month.length < 2) month = '0' + month;
-    // if (day.length < 2) day = '0' + day;
-
-    week = d.getWeekNumber();
-    day = d.getDay();
-
-
-    return [year, week, day].join('-');
-  }
-
-  function renderData(){
-  	$("#current-date").html(dateFormat(current_date, "dddd, mmmm dS") );
   	for (deck in active_data){
   		row = active_data[deck];
 
   		score = 10 - parseFloat(row['2015-'+current_day].replace("%", "")) / 10;
   		score = score.toFixed(1);
 
+  		deck_key = deck;
+  		if(deck_key == "Biltmore Ave (Aloft)"){
+  			deck_key = "Biltmore Ave";
+  		}
+
+  		if(deck_key == "Rankin Street"){
+  			deck_key = "Rankin Ave";
+  		}
+
+  		console.log(deck_key);
+  		// NEW SCORE
+  		score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
+
+
   		deck_class = 'deck-green';
   		if(score < 1){
   			deck_class = 'deck-red';
   		}
-  		else if(score < 2){
+  		else if(score < 10){
   			deck_class = 'deck-orange';
   		}
 
-  		html = "<li class='parking-deck "+deck_class+"'>" ;
+
+  		html = "";
+
+
+  		html += "<li class='parking-deck "+deck_class+"' data-deck-key='"+ deck_key + "'>" ;
 	  		html += "<h2>" + deck + "</h2>";
 	  		html += "<div class='score'>" + score + "</div>";
 	  		html += "<div>";
@@ -297,10 +232,13 @@ Date.prototype.getWeekNumber = function(){
 				  			}
 			  			}
 		  			}
+
 		  		html += "</ul>";
 		  		html += "<div class='chart-container'>";
 			  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
 			  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
+			  		html += "<h3>Past 4 Hours</h3>"
+			  		html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
 		  		html += "</div>";
 	  		html += "</div>";
   		html += "</li>";
@@ -430,6 +368,7 @@ Date.prototype.getWeekNumber = function(){
 
 	chart_data = [];
 	chart_data2 = [];
+	chart_data3 = [];
 
 	// for(year in active_data["Civic Center"]['year_data']){
 	// 	chart_data.push(active_data["Civic Center"]['year_data'][year]);
@@ -466,21 +405,22 @@ Date.prototype.getWeekNumber = function(){
 
 		chart_data.push(temp_data);
 		chart_data2.push(temp_data_2);
+
 	}
 
-	 
+
 
   	$("#parking-deck-list").slideDown('fast');
 
 
 	i = 0;
-	var myLineChart = [];
-	var ctx = []
+	myLineChart = [];
+
 	$(".chart").each(function(){
 
 		// Get the context of the canvas element we want to select
 
-	  	myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chart_data[i++], options) );
+	  	// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chart_data[i++], options) );
 	
 	});
 
@@ -489,9 +429,11 @@ Date.prototype.getWeekNumber = function(){
 
 		// Get the context of the canvas element we want to select
 
-	  	myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data2[i++], options2) );
+	  	// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data2[i++], options2) );
 	
 	});
+
+	$(".chart, .chart2").hide();
 
 	// $(".parking-deck").find('.chart-container').slideToggle();
 
@@ -501,8 +443,8 @@ Date.prototype.getWeekNumber = function(){
 	});
 
 	$("#wrapper").removeClass('blur');
-
-
-
-
   }
+
+  init();
+
+  window.setTimeout(checkForNewData, 10000);

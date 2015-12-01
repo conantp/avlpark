@@ -1,7 +1,10 @@
 var fs = require('fs');
 var tabletop = require('tabletop');
+var Keen = require('keen-js');
+
 // var dateFormat = require('dateFormat');
 var processed_data = {};
+var keen_data = {};
 
   var current_date = new Date();
   var current_month = false;
@@ -10,6 +13,9 @@ var processed_data = {};
   var current_week = false;
   var active_data = {};
 var processed_data = {};
+      var month_data = {};
+  var month_data_by_deck = {};
+
 
 function setDateVars(){
     var d = new Date();
@@ -61,12 +67,12 @@ Date.prototype.getWeekNumber = function(){
     buildActiveData();
     buildDayOfWeekAverage();
     buildMonthAverage();
-	  write_data_to_file(active_data);
+
+    active_data.month_data_by_deck = month_data_by_deck;
+	write_data_to_file('public/data/historical_data.json', active_data);
   }
 
-  function write_data_to_file(data){
-	var outputFilename = 'public/data/historical_data.json';
-
+  function write_data_to_file(outputFilename, data){
 	fs.writeFile(outputFilename, JSON.stringify(data, null, 4), function(err) {
 	    if(err) {
 	      console.log(err);
@@ -115,8 +121,6 @@ Date.prototype.getWeekNumber = function(){
       console.log(active_data);
     }
 
-      var month_data = {};
-  var month_data_by_deck = {};
 
   function buildMonthAverage(){
 	for(index in data){
@@ -270,11 +274,67 @@ var do_data_process = function(){
 
       tabletop.init( { key: public_spreadsheet_url,
                      callback: showInfo,
-                     simpleSheet: false } )
+                     simpleSheet: false } );
+
+
+     client = new Keen({
+		projectId: "565c7cf3672e6c59de885e59", // String (required always)
+		readKey: "0b4ce90e25a8674f4db8a6232c2b50814065d1b9f41ee768c3d427dfd0dd7b1c90535f056acade7a57551360d89dd5f16051bd804d57e57b0ce8b89640cd17f696d15ad098bd098e4d12196b0c5874128a0ce92015a64476e65ae74da94aaaba3f0a678d4337d95bb267ab79575468d9"      // String (required for querying data)
+
+	// protocol: "https",         // String (optional: https | http | auto)
+	// host: "api.keen.io/3.0",   // String (optional)
+	// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
+	});
+
+	 Keen.ready(function(){
+
+	   var query = new Keen.Query("minimum", {
+	    eventCollection: "deck_status",
+	    groupBy: "deck",
+	    interval: "every_5_minutes",
+	    targetProperty: "available",
+	    timeframe: "this_4_hours",
+	    timezone: "US/Eastern"
+	  });
+
+     client.run(query, function(err, res){
+	    if (err) {
+	      // there was an error!
+	    }
+	    else {
+
+	    	for(key in res.result){
+	    		row = res.result[key];
+
+	    		time = row.timeframe.start;
+	    		for(val_key in row.value){
+	    			value_row = row.value[val_key];
+	    			keen_deck_name = value_row.deck;
+
+	    			keen_deck_available = value_row.result;
+
+	    			if(keen_deck_available === null){
+	    				continue;
+	    			}
+
+	    			if(typeof keen_data[keen_deck_name] == 'undefined'){
+	    				keen_data[keen_deck_name] = {};
+	    			}
+	    			keen_data[keen_deck_name][time] = keen_deck_available;
+	    		}
+	    	}
+			write_data_to_file('public/data/keen_data.json', keen_data);
+
+	    }
+	  });
+	 });
+
 
 };
 
 do_data_process();
+
+var interval = setInterval(do_data_process, 10 * 1000);
 
 
 //https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml

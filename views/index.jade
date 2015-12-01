@@ -1,0 +1,22 @@
+extends layout
+
+block content
+	#overlay.blur
+	#wrapper
+		h1
+			span.project-name AVLPark
+			span  - Public Parking Data!
+		#container
+		h2.current-date
+		ul#parking-deck-list
+		#footer
+			p Patrick Conant + Jesse Michel | 
+				a(href='http://www.prcapps.com') PRC Applications
+	script(type='text/javascript').
+		var active_data = !{JSON.stringify(active_data)};
+		var keen_data = !{JSON.stringify(keen_data)};
+
+	script(src='/dateformat/lib/dateformat.js')
+	script(src='/chart.js/Chart.min.js')
+	script(src='https://code.jquery.com/jquery-1.11.3.min.js')
+	script(src='/js/app.js')
