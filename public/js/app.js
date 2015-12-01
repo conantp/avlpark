@@ -9,6 +9,16 @@
   var current_week = false;
   var month_data_by_deck = {};
 var myLineChart = [];
+
+var deck_realtime_graphs = {};
+
+var deck_capacity = {
+'Civic Center': 550,
+'Rankin Ave': 262,
+'Biltmore Ave': 404,
+'Wall Street': 221 
+};
+
 // window.onload = function() { init() };
 
 function init() {
@@ -60,8 +70,7 @@ function getKeenData(){
 
 function renderKeenData(){
 
-	chart_data3 = [];
-		var options3 = {
+	var options3 = {
 
 	    ///Boolean - Whether grid lines are shown across the chart
 	    scaleShowGridLines : true,
@@ -114,7 +123,7 @@ function renderKeenData(){
 	        maintainAspectRatio: true,
 
 	    scaleStartValue: 0,
-	    scaleSteps: 10,
+	    scaleSteps: 5,
 	    scaleStepWidth: 30,
 
 	    scaleOverride: true,
@@ -138,41 +147,57 @@ function renderKeenData(){
 		        }
 		    ]
 		};
-		chart_data3.push(temp_data_3);
+		chart_data3[deck] = temp_data_3;
+
+		console.log(deck, deck_capacity[deck]);
+
+		options3.scaleStepWidth = Math.ceil(deck_capacity[deck]/options3.scaleSteps);
+
+		deck_realtime_graphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chart_data3[deck], options3);
 	}
-	
-
-
-	i = 0;
-	$(".chart3").each(function(){
-
-		// Get the context of the canvas element we want to select
-
-	  	myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data3[i++], options3) );
-	
-	});
 }
 
-function checkForNewData(){
-	$.get("/data", function(data){ 
+function checkForNewData(data){
+
+	// $.get("/data", function(data){ 
 		console.log(data); 
 
 		keen_data = data;
-		i = 0;
-		for(deck_key in data){
-	  		new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
 
-			$('li.parking-deck[data-deck-key="'+deck_key+'"]').find('.score').html(new_score);
-		
+		for(deck_key in data){
+			// Get last label
+			var last_label = chart_data3[deck_key].labels[chart_data3[deck_key].labels.length - 1];
+
+
 			var keys = [];
 			for(var k in keen_data[deck_key]) keys.push(k.substr(11, 5));
 
-			myLineChart[i++].addData([parseInt(new_score)],keys.pop() );
+			chart_data3[deck_key].labels = keys;
+			chart_data3[deck_key].datasets[0].data = keen_data[deck_key];
+
+	  		new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
+
+			// $('li.parking-deck[data-deck-key="'+deck_key+'"]').find('.score').html(new_score);
+
+
+			var last_key = keys[keys.length - 1];
+
+			console.log('labels', last_label, last_key);	
+
+			if(last_label == last_key){
+				deck_realtime_graphs[deck_key].datasets[0].points[deck_realtime_graphs[deck_key].datasets[0].points.length - 1].value = new_score;
+				deck_realtime_graphs[deck_key].update();
+			}	
+			else{
+				deck_realtime_graphs[deck_key].removeData();
+				deck_realtime_graphs[deck_key].addData([parseInt(new_score)], last_key )
+			}
+
 		}
 
-	  window.setTimeout(checkForNewData, 10000);
+	  // window.setTimeout(checkForNewData, 10000);
 
-	});
+	// });
 }
 
 function renderData(){
@@ -189,6 +214,7 @@ function renderData(){
   		deck_key = deck;
   		if(deck_key == "Biltmore Ave (Aloft)"){
   			deck_key = "Biltmore Ave";
+  			deck = deck_key;
   		}
 
   		if(deck_key == "Rankin Street"){
@@ -212,33 +238,35 @@ function renderData(){
   		html = "";
 
 
-  		html += "<li class='parking-deck "+deck_class+"' data-deck-key='"+ deck_key + "'>" ;
-	  		html += "<h2>" + deck + "</h2>";
-	  		html += "<div class='score'>" + score + "</div>";
-	  		html += "<div>";
-		  		html += "<ul class='year-list'>";
-		  			i = 0;
-		  			for(year in active_data[deck]){
-		  				if(i++ > 3){
-		  					break;
-		  				}
-		  				if(typeof active_data[deck][year] == 'string'){
-			  				percent = active_data[deck][year];
-			  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
-			  				if(percent > 0){
-				  				html += "<li>";
-				  					html += "<p><b>" + year + "</b> : " + percent + "%</p>";
-				  				html += "</li>";
+  		html += "<li class='parking-deck "+deck_class+" col-sm-3' data-deck-key='"+ deck_key + "'>" ;
+	  		html += "<div class='parking-deck-inner'>";
+		  		html += "<h2>" + deck + "</h2>";
+		  		html += "<div class='score'>" + score + "</div>";
+		  		html += "<div>";
+			  		html += "<ul class='year-list'>";
+			  			i = 0;
+			  			for(year in active_data[deck]){
+			  				if(i++ > 3){
+			  					break;
+			  				}
+			  				if(typeof active_data[deck][year] == 'string'){
+				  				percent = active_data[deck][year];
+				  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
+				  				if(percent > 0){
+					  				html += "<li>";
+					  					html += "<p><b>" + year + "</b> : " + percent + "%</p>";
+					  				html += "</li>";
+					  			}
 				  			}
 			  			}
-		  			}
 
-		  		html += "</ul>";
-		  		html += "<div class='chart-container'>";
-			  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
-			  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
-			  		html += "<h3>Past 4 Hours</h3>"
-			  		html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
+			  		html += "</ul>";
+			  		html += "<div class='chart-container'>";
+				  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
+				  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
+				  		html += "<h3>Past 4 Hours</h3>"
+				  		html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
+			  		html += "</div>";
 		  		html += "</div>";
 	  		html += "</div>";
   		html += "</li>";
@@ -368,7 +396,8 @@ function renderData(){
 
 	chart_data = [];
 	chart_data2 = [];
-	chart_data3 = [];
+	chart_data3 = {};
+
 
 	// for(year in active_data["Civic Center"]['year_data']){
 	// 	chart_data.push(active_data["Civic Center"]['year_data'][year]);
@@ -441,10 +470,30 @@ function renderData(){
 		$(this).find('.chart-container').slideToggle();
 
 	});
-
-	$("#wrapper").removeClass('blur');
   }
 
   init();
 
-  window.setTimeout(checkForNewData, 10000);
+  var socket = io.connect();
+
+socket.on('spaces-update', function(data){
+
+  console.log("Message received: ", data);
+		for(key in data.decks){
+			row = data.decks[key];
+
+			$('li.parking-deck[data-deck-key="'+row.name+'"]').find('.score').html(row.available);
+
+			// console.log(row);
+		}
+
+});
+
+socket.on('keen-update', function(data){
+
+  console.log("Keen received: ", data);
+		
+	checkForNewData(data);
+
+});
+

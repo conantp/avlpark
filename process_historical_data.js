@@ -291,9 +291,9 @@ var do_data_process = function(){
 	   var query = new Keen.Query("minimum", {
 	    eventCollection: "deck_status",
 	    groupBy: "deck",
-	    interval: "every_5_minutes",
+	    interval: "every_1_minutes",
 	    targetProperty: "available",
-	    timeframe: "this_4_hours",
+	    timeframe: "this_5_minutes",
 	    timezone: "US/Eastern"
 	  });
 

@@ -30,7 +30,7 @@ nav, footer, header, section, summary, mark, audio, video {
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cit, code,
 del, dfn, em, ins, q, samp, small, strong, sub, sup, b, i, hr, dl, dt, dd,
 ol, ul, li, fieldset, legend, label {
-  border: 0;
+  border: 0; 
   font-size: 100%;
   vertical-align: baseline;
   margin: 0;
@@ -108,7 +108,7 @@ body{
 }
 
 
-.blur{
+.blur{ 
 
 	  -webkit-filter: blur(10px);
   -moz-filter: blur(5px);
@@ -123,7 +123,7 @@ body{
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-image: url("http://dev-open-housing-asheville.pantheon.io/wp-content/uploads/2015/05/Asheville_Downtown_panorama1.jpg");
+	/*background-image: url("http://dev-open-housing-asheville.pantheon.io/wp-content/uploads/2015/05/Asheville_Downtown_panorama1.jpg");*/
 
 	z-index: -999999;
 	.blur;
@@ -210,20 +210,26 @@ h2{
 }
 
 .deck-green{
-	.linear-gradient(180deg, fade(lighten(green, 50%), 90%), fade(lighten(green, 20%), 80%) );
+	.parking-deck-inner{
+		.linear-gradient(180deg, fade(lighten(green, 50%), 90%), fade(lighten(green, 20%), 80%) );
+	}
 }
 
 .deck-red{
-	.linear-gradient(180deg, lighten(red, 20%), red);
+	.parking-deck-inner{
+		.linear-gradient(180deg, lighten(red, 20%), red);
+	}
 
 }
 
 .deck-orange{
-	.linear-gradient(180deg, fade(lighten(yellow, 20%), 90%), fade(lighten(orange, 0%), 80%) );
+	.parking-deck-inner{
+		.linear-gradient(180deg, fade(lighten(yellow, 20%), 90%), fade(lighten(orange, 0%), 80%) );
+	}
 }
 
 .deck-black{
-	.linear-gradient(180deg, fade(#666, 80%), fade(black, 80%) );
+		.linear-gradient(180deg, fade(#666, 80%), fade(black, 80%) );
 }
 
 
@@ -247,7 +253,7 @@ h2{
 	font-size: 1.4em;
 }
 
-.parking-deck{
+.parking-deck-inner{
 	cursor: pointer;
 	color: white;
 	padding: 20px;
@@ -257,7 +263,7 @@ h2{
 	box-shadow: 1px -1px 10px rgba(0,0,0,0.5);
 }
 
-.chart, .chart2{
+.chart, .chart2, .chart3{
 	background: rgba(0,0,0,0.8);
 	border-radius: 5px;
 	width: 100% !important;
