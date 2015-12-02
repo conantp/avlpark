@@ -2,6 +2,13 @@ var fs = require('fs');
 var request = require("request")
 
 var express = require('express')
+
+var get_keen_data = require('./getdata.js');
+
+var process_keen_data = require('./process_keen_data.js');
+
+console.log(process_keen_data);
+
 var app = express()
 
 app.set('view engine', 'jade');
@@ -133,7 +140,11 @@ io.on('connection', function(socket){
     });
 });
 
- 
+
+get_keen_data.monitor_check_space_data();
+
+process_keen_data.monitor_process_keen_data();
+
 http.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
   monitorForSpaces();

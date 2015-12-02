@@ -1,10 +1,8 @@
 var fs = require('fs');
 var tabletop = require('tabletop');
-var Keen = require('keen-js');
 
 // var dateFormat = require('dateFormat');
 var processed_data = {};
-var keen_data = {};
 
   var current_date = new Date();
   var current_month = false;
@@ -277,58 +275,7 @@ var do_data_process = function(){
                      simpleSheet: false } );
 
 
-     client = new Keen({
-		projectId: "565c7cf3672e6c59de885e59", // String (required always)
-		readKey: "0b4ce90e25a8674f4db8a6232c2b50814065d1b9f41ee768c3d427dfd0dd7b1c90535f056acade7a57551360d89dd5f16051bd804d57e57b0ce8b89640cd17f696d15ad098bd098e4d12196b0c5874128a0ce92015a64476e65ae74da94aaaba3f0a678d4337d95bb267ab79575468d9"      // String (required for querying data)
-
-	// protocol: "https",         // String (optional: https | http | auto)
-	// host: "api.keen.io/3.0",   // String (optional)
-	// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
-	});
-
-	 Keen.ready(function(){
-
-	   var query = new Keen.Query("minimum", {
-	    eventCollection: "deck_status",
-	    groupBy: "deck",
-	    interval: "every_1_minutes",
-	    targetProperty: "available",
-	    timeframe: "this_5_minutes",
-	    timezone: "US/Eastern"
-	  });
-
-     client.run(query, function(err, res){
-	    if (err) {
-	      // there was an error!
-	    }
-	    else {
-
-	    	for(key in res.result){
-	    		row = res.result[key];
-
-	    		time = row.timeframe.start;
-	    		for(val_key in row.value){
-	    			value_row = row.value[val_key];
-	    			keen_deck_name = value_row.deck;
-
-	    			keen_deck_available = value_row.result;
-
-	    			if(keen_deck_available === null){
-	    				continue;
-	    			}
-
-	    			if(typeof keen_data[keen_deck_name] == 'undefined'){
-	    				keen_data[keen_deck_name] = {};
-	    			}
-	    			keen_data[keen_deck_name][time] = keen_deck_available;
-	    		}
-	    	}
-			write_data_to_file('public/data/keen_data.json', keen_data);
-
-	    }
-	  });
-	 });
-
+     
 
 };
 
