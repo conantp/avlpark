@@ -3,12 +3,12 @@ var Keen = require('keen-js');
 
 var keen_data = {};
 
-var client;
 
 module.exports = {
+	client: false,
 	data_feed_url: "https://s3.amazonaws.com/asheville-parking-decks/spaces.json",
 	monitor_check_space_data: function(){
-		client = new Keen({
+		module.exports.client  = new Keen({
 			projectId: "565c7cf3672e6c59de885e59", // String (required always)
 			writeKey: "86e65b316d1ca3a89c290c026a2c4cdee5dd764e836c140e014d7e364b25a1472454f97857cbf3214061a742c0afd4b670fa50b3eb065c9fd0474496805eb92d648fd060729dff23340f353f39b0d825abd3ddfdd2ae82d036e7757f8e80856d3931fa3887723d77968d462f36bae605",   // String (required for sending data)
 			readKey: "0b4ce90e25a8674f4db8a6232c2b50814065d1b9f41ee768c3d427dfd0dd7b1c90535f056acade7a57551360d89dd5f16051bd804d57e57b0ce8b89640cd17f696d15ad098bd098e4d12196b0c5874128a0ce92015a64476e65ae74da94aaaba3f0a678d4337d95bb267ab79575468d9"      // String (required for querying data)
@@ -61,7 +61,7 @@ module.exports = {
 				        	// console.log(keen_deck_event);
 
 				        	// PRC Disabled
-				        	if(false){
+				        	if(true){
 					        	keen_deck_events.deck_status.push(keen_deck_event);
 				        	}				     
 				        }
@@ -69,7 +69,7 @@ module.exports = {
 			        	keen_deck_events.deck_status_all.push(keen_event_all_decks);
 						// console.log(keen_deck_events);
 				        // Send multiple events to several collections
-						client.addEvents(keen_deck_events, function(err, res){
+						module.exports.client.addEvents(keen_deck_events, function(err, res){
 						  if (err) {
 						  	console.log("error", err);
 						    // there was an error!
