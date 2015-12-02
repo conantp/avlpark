@@ -7,7 +7,11 @@ var keen_data = {};
 module.exports = {
 	client: false,
 	data_feed_url: "https://s3.amazonaws.com/asheville-parking-decks/spaces.json",
-	monitor_check_space_data: function(){
+	active_spaces_data: false,
+	io: false,
+	monitor_check_space_data: function(io){
+		module.exports.io = io;
+
 		module.exports.client  = new Keen({
 			projectId: "565c7cf3672e6c59de885e59", // String (required always)
 			writeKey: "86e65b316d1ca3a89c290c026a2c4cdee5dd764e836c140e014d7e364b25a1472454f97857cbf3214061a742c0afd4b670fa50b3eb065c9fd0474496805eb92d648fd060729dff23340f353f39b0d825abd3ddfdd2ae82d036e7757f8e80856d3931fa3887723d77968d462f36bae605",   // String (required for sending data)
@@ -17,7 +21,7 @@ module.exports = {
 			// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
 		});
 
-		var interval = setInterval(this.check_space_data, 10 * 1000);
+		var interval = setInterval(module.exports.check_space_data, 10 * 1000);
 	},
 
 	check_space_data: function(){
@@ -30,6 +34,17 @@ module.exports = {
 
 				    if (!error && response.statusCode === 200) {
 				        var keen_ts = new Date().toISOString();
+
+				         if(JSON.stringify(body) != JSON.stringify(module.exports.active_spaces_data)){
+				              module.exports.active_spaces_data = body;
+				              module.exports.io.emit('spaces-update', module.exports.active_spaces_data);
+				              console.log("Sent spaces update to clients via socket");
+				          }
+				          else{
+				            console.log("No spaces update");
+				            return;
+				          }
+
 
 				    	var keen_deck_events = {'deck_status': [], 'deck_status_all' : []};
 
