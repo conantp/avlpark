@@ -52,20 +52,25 @@ var io = require('socket.io')(http);
 io.on('connection', function(socket){
   console.log('a user connected');
 
+  // console.log( get_keen_data.active_spaces_data);
+  io.emit('spaces-update', get_keen_data.active_spaces_data);
+
   socket.on('disconnect', function(){
       console.log('user disconnected');
     });
 
-  socket.on('spaces-update', function(msg){
-        console.log('message' + msg);
+  // socket.on('spaces-update', function(msg){
+  //       console.log('message' + msg);
 
-      io.emit('chat message', msg);
-    });
+  //     io.emit('chat message', msg);
+  //   });
 });
+
 
 
 get_keen_data.monitor_check_space_data(io);
 process_keen_data.monitor_process_keen_data(io);
+get_keen_data.check_space_data();
 
 http.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))

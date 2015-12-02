@@ -25,13 +25,13 @@ module.exports = {
 	process_keen_data: function(){
 		console.log("Checking Keen Data");
 		Keen.ready(function(){
-			var query = new Keen.Query("minimum", 
+			var query = new Keen.Query("average", 
 										{
 											eventCollection: "deck_status",
 											groupBy: "deck",
 											interval: "every_1_minutes",
 											targetProperty: "available",
-											timeframe: "this_60_minutes",
+											timeframe: "this_10_minutes",
 											timezone: "US/Eastern"
 										});
 
@@ -43,8 +43,6 @@ module.exports = {
 			    else {
 					if(JSON.stringify(res) != JSON.stringify(module.exports.active_keen_data) ){
 		    	      	module.exports.active_keen_data = res;
-
-
 		    	      
 				    	var keen_data = {};
 

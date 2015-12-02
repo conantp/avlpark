@@ -241,7 +241,7 @@ function renderData(){
   		html += "<li class='parking-deck "+deck_class+" col-sm-3' data-deck-key='"+ deck_key + "'>" ;
 	  		html += "<div class='parking-deck-inner container-fluid'>";
 		  		html += "<h2 class='col-xs-6'>" + deck + "</h2>";
-		  		html += "<div class='col-xs-6'><div class='score odometer pull-right'>" + score + "</div></div>";
+		  		html += "<div class='col-xs-6'><div class='score odometer pull-right'>0</div></div>";
 		  		html += "<div class='col-xs-12'>";
 			  		html += "<ul class='year-list'>";
 			  			i = 0;
@@ -474,19 +474,22 @@ function renderData(){
 
   init();
 
-  var socket = io.connect();
+var socket = io.connect();
+
+
+function updateScoreData(data){
+	for(key in data.decks){
+		row = data.decks[key];
+
+		$('li.parking-deck[data-deck-key="'+row.name+'"]').find('.score').html(parseInt(row.available) );
+
+		// console.log(row);
+	}
+}
 
 socket.on('spaces-update', function(data){
-
-  console.log("Message received: ", data);
-		for(key in data.decks){
-			row = data.decks[key];
-
-			$('li.parking-deck[data-deck-key="'+row.name+'"]').find('.score').html(parseInt(row.available) );
-
-			// console.log(row);
-		}
-
+	console.log("Message received: ", data);
+	updateScoreData(data);
 });
 
 socket.on('keen-update', function(data){
