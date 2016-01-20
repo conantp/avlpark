@@ -19,6 +19,7 @@ html, body {
 	line-height: 1.5;
 	margin: 0;
 	padding: 0;
+	font-size: 12px;
 }
 
 div, span, object, iframe, img, table, caption, thead, tbody,
@@ -62,18 +63,14 @@ a img {
 }
 
 
+h2{
+	font-size: 2em;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+h3{
+	font-size: 1.7em;
+	padding-bottom: 1em;
+}
 
 
 @import url("//fonts.googleapis.com/css?family=Wallpoet");
@@ -233,8 +230,8 @@ body{
    font-weight: 300;
 	margin: 0;
 	padding: 0;
-		text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
-		color: white;
+		/*text-shadow: 1px 1px 5px rgba(0,0,0,0.8);*/
+		/*color: white;*/
 }
 
 
@@ -260,8 +257,8 @@ body{
 }
 
 #wrapper{
-	background: rgba(0,0,0,0.5);
-    transition: all 1s;
+	/*background: rgba(0,0,0,0.5);*/
+    transition: all 1s; 
     height: 125%;
 
 
@@ -311,6 +308,8 @@ h2{
 .year-list li{
 	display: inline-block;
 	width: 33%;
+	color: white;
+	padding: 10px;
 }
 
 #parking-deck-list{
@@ -321,9 +320,9 @@ h2{
 
 #parking-deck-list h2{
 	font-size: 1.4em;
-	text-align: left;
-	display: inline-block;
-	margin: 0;
+	/*text-align: left;*/
+	/*display: inline-block;*/
+	margin: 10px auto;
 	padding: 0;
 }
 
@@ -336,32 +335,36 @@ h2{
 
 .deck-green{
 	.parking-deck-inner{
-		.linear-gradient(180deg, fade(lighten(green, 50%), 90%), fade(lighten(green, 20%), 80%) );
+		/*.linear-gradient(180deg, fade(lighten(green, 50%), 90%), fade(lighten(green, 20%), 80%) );*/
+		background: #58B858;
 	}
 }
 
 .deck-red{
 	.parking-deck-inner{
-		.linear-gradient(180deg, lighten(red, 20%), red);
+		/*.linear-gradient(180deg, lighten(red, 20%), red);*/
+		background: #C04141;
 	}
 
 }
 
 .deck-orange{
 	.parking-deck-inner{
-		.linear-gradient(180deg, fade(lighten(yellow, 20%), 90%), fade(lighten(orange, 0%), 80%) );
+		/*.linear-gradient(180deg, fade(lighten(yellow, 20%), 90%), fade(lighten(orange, 0%), 80%) );*/
+		background: #FFAC2D;
 	}
 }
 
 .deck-black{
-		.linear-gradient(180deg, fade(#666, 80%), fade(black, 80%) );
+		/*.linear-gradient(180deg, fade(#666, 80%), fade(black, 80%) );*/
+		background: #5D5D5D;
 }
 
 
 
 .year-list{
 	margin-top: 10px;
-	border-radius: 5px;
+	/*border-radius: 5px;*/
 	.deck-black;
 	text-align: center;
 
@@ -381,16 +384,21 @@ h2{
 .parking-deck-inner{
 	cursor: pointer;
 	color: white;
-	padding: 20px;
+	overflow:hidden;
+	/*padding: 20px;*/
 		margin-bottom: 20px;
-	border-radius: 10px;
+	border-radius: 3px;
 
-	box-shadow: 1px -1px 10px rgba(0,0,0,0.5);
+	/*box-shadow: 1px -1px 10px rgba(0,0,0,0.5);*/
+}
+
+.parking-deck-footer{
+	padding-top: 20px;
 }
 
 .chart, .chart2, .chart3{
 	background: rgba(0,0,0,0.8);
-	border-radius: 5px;
+	/*border-radius: 5px;*/
 	width: 100% !important;
 	height: 200px;
 	box-sizing: border-box;
@@ -410,7 +418,17 @@ h2{
 }
 
 #footer a{
-	color: white;
+	/*color: white;*/
 }
+
+/*HELPER CLASSES*/
+.display-block{
+	display:block;
+}
+
+.text-center{
+	text-align:center; 
+} 
+
 
 

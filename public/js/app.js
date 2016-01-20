@@ -239,36 +239,39 @@ function renderData(){
 
 
   		html += "<li class='parking-deck "+deck_class+" col-sm-3' data-deck-key='"+ deck_key + "'>" ;
-	  		html += "<div class='parking-deck-inner container-fluid'>";
-		  		html += "<h2 class='col-xs-6'>" + deck + "</h2>";
-		  		html += "<div class='col-xs-6'><div class='score odometer pull-right'>0</div></div>";
-		  		html += "<div class='col-xs-12'>";
-			  		html += "<ul class='year-list'>";
-			  			i = 0;
-			  			for(year in active_data[deck]){
-			  				if(i++ > 3){
-			  					break;
-			  				}
-			  				if(typeof active_data[deck][year] == 'string'){
-				  				percent = active_data[deck][year];
-				  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
-				  				if(percent > 0){
-					  				html += "<li>";
-					  					html += "<p><b>" + year + "</b> : " + percent + "%</p>";
-					  				html += "</li>";
-					  			}
-				  			}
-			  			}
-
-			  		html += "</ul>";
+	  		html += "<div class='parking-deck-inner'>";
+		  		html += "<h2 class='text-center display-block'>" + deck + "</h2>";
+		  		html += "<div class='score-container text-center'><div class='score odometer'>0</div><b>&nbsp;&nbsp;spaces available</b></div>";
+		  		html += "<div class='graph-container'>";
 			  		html += "<div class='chart-container'>";
 				  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
 				  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
-				  		html += "<h3>Past 4 Hours</h3>"
+				  		html += "<small class='text-center display-block'>Graph of the past 4 hours</small>"
 				  		html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
 			  		html += "</div>";
+			  		html += "<div class='parking-deck-footer'>";
+						html += "<small class='text-center display-block'>" + "Capacity in previous years for </br>" + dateFormat(current_date, "mmmm dS") + "</small>";			  		
+				  		html += "<ul class='year-list'>";
+				  			i = 0;
+				  			for(year in active_data[deck]){
+				  				if(i++ > 3){
+				  					break;
+				  				}
+				  				if(typeof active_data[deck][year] == 'string'){
+					  				percent = active_data[deck][year];
+					  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
+					  				if(percent > 0){
+						  				html += "<li>";
+						  					html += "<p><b>" + year + "</b> : " + percent + "%</p>";
+						  				html += "</li>";
+						  			}
+					  			}
+				  			}
+
+				  		html += "</ul>";
+				  	html +="</div>";			  		
 		  		html += "</div>";
-	  		html += "</div>";
+	  		html += "</div>";	  		
   		html += "</li>";
   		$("#parking-deck-list").append(html);
   	}
@@ -476,15 +479,15 @@ function renderData(){
 
 var socket = io.connect();
 
-
 function updateScoreData(data){
+	var total_available = 0;
 	for(key in data.decks){
 		row = data.decks[key];
-
+		total_available += parseInt(row.available);
 		$('li.parking-deck[data-deck-key="'+row.name+'"]').find('.score').html(parseInt(row.available) );
-
 		// console.log(row);
 	}
+	$('.total-available b').html(total_available);
 }
 
 socket.on('spaces-update', function(data){

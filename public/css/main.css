@@ -19,6 +19,7 @@ body {
   line-height: 1.5;
   margin: 0;
   padding: 0;
+  font-size: 12px;
 }
 div,
 span,
@@ -124,6 +125,13 @@ a img {
 }
 :focus {
   outline: 0;
+}
+h2 {
+  font-size: 2em;
+}
+h3 {
+  font-size: 1.7em;
+  padding-bottom: 1em;
 }
 .odometer.odometer-auto-theme,
 .odometer.odometer-theme-digital {
@@ -240,8 +248,8 @@ body {
   font-weight: 300;
   margin: 0;
   padding: 0;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
-  color: white;
+  /*text-shadow: 1px 1px 5px rgba(0,0,0,0.8);*/
+  /*color: white;*/
 }
 .blur {
   -webkit-filter: blur(10px);
@@ -265,7 +273,7 @@ body {
   filter: blur(10px);
 }
 #wrapper {
-  background: rgba(0, 0, 0, 0.5);
+  /*background: rgba(0,0,0,0.5);*/
   transition: all 1s;
   height: 125%;
 }
@@ -307,6 +315,8 @@ h2 {
 .year-list li {
   display: inline-block;
   width: 33%;
+  color: white;
+  padding: 10px;
 }
 #parking-deck-list {
   display: none;
@@ -315,9 +325,9 @@ h2 {
 }
 #parking-deck-list h2 {
   font-size: 1.4em;
-  text-align: left;
-  display: inline-block;
-  margin: 0;
+  /*text-align: left;*/
+  /*display: inline-block;*/
+  margin: 10px auto;
   padding: 0;
 }
 .score {
@@ -326,51 +336,26 @@ h2 {
   text-shadow: none;
 }
 .deck-green .parking-deck-inner {
-  background: -webkit-linear-gradient(180deg, rgba(128, 255, 128, 0.9) 0%, rgba(0, 230, 0, 0.8) 100%);
-  background: -moz-linear-gradient(180deg, rgba(128, 255, 128, 0.9) 0%, rgba(0, 230, 0, 0.8) 100%);
-  background: -ms-linear-gradient(180deg, rgba(128, 255, 128, 0.9) 0%, rgba(0, 230, 0, 0.8) 100%);
-  background: -o-linear-gradient(180deg, rgba(128, 255, 128, 0.9) 0%, rgba(0, 230, 0, 0.8) 100%);
-  background: linear-gradient(180deg, rgba(128, 255, 128, 0.9) 0%, rgba(0, 230, 0, 0.8) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc00e600', endColorstr='#e680ff80', GradientType=1);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc00e600',endColorstr='#e680ff80',GradientType=1);
+  /*.linear-gradient(180deg, fade(lighten(green, 50%), 90%), fade(lighten(green, 20%), 80%) );*/
+  background: #58B858;
 }
 .deck-red .parking-deck-inner {
-  background: -webkit-linear-gradient(180deg, #ff6666 0%, #ff0000 100%);
-  background: -moz-linear-gradient(180deg, #ff6666 0%, #ff0000 100%);
-  background: -ms-linear-gradient(180deg, #ff6666 0%, #ff0000 100%);
-  background: -o-linear-gradient(180deg, #ff6666 0%, #ff0000 100%);
-  background: linear-gradient(180deg, #ff6666 0%, #ff0000 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff0000', endColorstr='#ffff6666', GradientType=1);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffff0000',endColorstr='#ffff6666',GradientType=1);
+  /*.linear-gradient(180deg, lighten(red, 20%), red);*/
+  background: #C04141;
 }
 .deck-orange .parking-deck-inner {
-  background: -webkit-linear-gradient(180deg, rgba(255, 255, 102, 0.9) 0%, rgba(255, 165, 0, 0.8) 100%);
-  background: -moz-linear-gradient(180deg, rgba(255, 255, 102, 0.9) 0%, rgba(255, 165, 0, 0.8) 100%);
-  background: -ms-linear-gradient(180deg, rgba(255, 255, 102, 0.9) 0%, rgba(255, 165, 0, 0.8) 100%);
-  background: -o-linear-gradient(180deg, rgba(255, 255, 102, 0.9) 0%, rgba(255, 165, 0, 0.8) 100%);
-  background: linear-gradient(180deg, rgba(255, 255, 102, 0.9) 0%, rgba(255, 165, 0, 0.8) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccffa500', endColorstr='#e6ffff66', GradientType=1);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccffa500',endColorstr='#e6ffff66',GradientType=1);
+  /*.linear-gradient(180deg, fade(lighten(yellow, 20%), 90%), fade(lighten(orange, 0%), 80%) );*/
+  background: #FFAC2D;
 }
 .deck-black {
-  background: -webkit-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: -moz-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: -ms-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: -o-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000', endColorstr='#cc666666', GradientType=1);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000',endColorstr='#cc666666',GradientType=1);
+  /*.linear-gradient(180deg, fade(#666, 80%), fade(black, 80%) );*/
+  background: #5D5D5D;
 }
 .year-list {
   margin-top: 10px;
-  border-radius: 5px;
-  background: -webkit-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: -moz-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: -ms-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: -o-linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  background: linear-gradient(180deg, rgba(102, 102, 102, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000', endColorstr='#cc666666', GradientType=1);
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cc000000',endColorstr='#cc666666',GradientType=1);
+  /*border-radius: 5px;*/
+  /*.linear-gradient(180deg, fade(#666, 80%), fade(black, 80%) );*/
+  background: #5D5D5D;
   text-align: center;
 }
 .chart-container {
@@ -384,16 +369,20 @@ h2 {
 .parking-deck-inner {
   cursor: pointer;
   color: white;
-  padding: 20px;
+  overflow: hidden;
+  /*padding: 20px;*/
   margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 1px -1px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  /*box-shadow: 1px -1px 10px rgba(0,0,0,0.5);*/
+}
+.parking-deck-footer {
+  padding-top: 20px;
 }
 .chart,
 .chart2,
 .chart3 {
   background: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
+  /*border-radius: 5px;*/
   width: 100% !important;
   height: 200px;
   box-sizing: border-box;
@@ -410,5 +399,12 @@ h2 {
   font-size: 0.8em;
 }
 #footer a {
-  color: white;
+  /*color: white;*/
+}
+/*HELPER CLASSES*/
+.display-block {
+  display: block;
+}
+.text-center {
+  text-align: center;
 }
