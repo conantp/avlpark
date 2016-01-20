@@ -126,6 +126,9 @@ a img {
 :focus {
   outline: 0;
 }
+img {
+  max-width: 100%;
+}
 h2 {
   font-size: 2em;
 }
