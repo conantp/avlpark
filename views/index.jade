@@ -2,15 +2,21 @@ extends layout
 
 block content
 	#wrapper
-		h1
-			span.project-name AVLPark
-			span  - Public Parking Data!
+		h1.text-center
+			img(src='/images/AVLPark-logo.png').text-center 
+			<!-- span.project-name AVLPark -->
+			<!-- span  - Public Parking Data! -->
 		#container
-		h2.current-date
+		h2.current-date.text-center
+		h3.total-available.text-center There are 
+			b.total-available-count
+			|  available deck spaces in downtown Asheville right now 
 		ul#parking-deck-list.container-fluid
 		#footer
 			p Patrick Conant + Jesse Michel | 
 				a(href='http://www.prcapps.com') PRC Applications
+			p Check out the project on 
+				a(href='https://github.com/conantp/avlpark') Github			
 	script(type='text/javascript').
 		var active_data = !{JSON.stringify(active_data)};
 		var keen_data = !{JSON.stringify(keen_data)};

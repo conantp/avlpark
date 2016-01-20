@@ -70,7 +70,7 @@ io.on('connection', function(socket){
 
 get_keen_data.monitor_check_space_data(io);
 process_keen_data.monitor_process_keen_data(io);
-get_keen_data.check_space_data();
+// get_keen_data.check_space_data();
 
 http.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
