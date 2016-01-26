@@ -19,7 +19,7 @@ module.exports = {
 		// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
 		});
 
-		var interval = setInterval(module.exports.process_keen_data, 10 * 1000);
+		var interval = setInterval(module.exports.process_keen_data, 60 * 1000);
 	},
 
 	process_keen_data: function(){
