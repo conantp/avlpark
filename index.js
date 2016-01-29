@@ -16,6 +16,9 @@ app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 app.use(express.static(__dirname + '/node_modules'))
 
+app.get('/about', function(request, response) {
+  response.render('about');
+});
 
 app.get('/', function(request, response) {
     var obj;

@@ -19,8 +19,26 @@ module.exports = {
 		// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
 		});
 
+		fs.stat('public/data/keen_data.json', function(err, stat) {
+		    if(err == null) {
+		        console.log('File exists');
+		    } else if(err.code == 'ENOENT') {
+		    	module.exports.process_keen_data();
+		        // fs.writeFile('log.txt', 'Some log\n');
+		    } else {
+		        console.log('Some other error: ', err.code);
+		    }
+		});
+
 		var interval = setInterval(module.exports.process_keen_data, 60 * 1000);
 	},
+
+	get_full_deck_data: function(query, filename){
+
+
+
+	},
+
 
 	process_keen_data: function(){
 		console.log("Checking Keen Data");
