@@ -20,6 +20,15 @@ app.get('/about', function(request, response) {
   response.render('about');
 });
 
+app.get('/stats', function(request, response) {
+    var obj;
+    fs.readFile('public/data/keen_data_long.json', 'utf8', function (err, data) {
+      if (err) throw err;
+      obj = JSON.parse(data);
+        response.render('stats', { keen_data: obj});
+    });
+});
+
 app.get('/', function(request, response) {
     var obj;
     var obj2;

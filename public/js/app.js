@@ -246,11 +246,11 @@ function renderData(){
 			  		html += "<div class='chart-container'>";
 				  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
 				  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
-				  		html += "<small class='text-center display-block'>Graph of the past 4 hours</small>"
+				  		html += "<small class='text-center display-block'>Graph of the past hour</small>"
 				  		html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
 			  		html += "</div>";
 			  		html += "<div class='parking-deck-footer'>";
-						html += "<small class='text-center display-block'>" + "Capacity in previous years for </br>" + dateFormat(current_date, "mmmm dS") + "</small>";			  		
+						html += "<small class='text-center display-block'>" + "Max use in previous years</small>";			  		
 				  		html += "<ul class='year-list'>";
 				  			i = 0;
 				  			for(year in active_data[deck]){

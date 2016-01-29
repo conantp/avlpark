@@ -30,15 +30,60 @@ module.exports = {
 		    }
 		});
 
+		fs.stat('public/data/keen_data_long.json', function(err, stat) {
+		    if(err == null) {
+		        console.log('Long File exists');
+		    } else if(err.code == 'ENOENT') {
+		    	module.exports.process_wider_keen_data();
+		        // fs.writeFile('log.txt', 'Some log\n');
+		    } else {
+		        console.log('Some other error: ', err.code);
+		    }
+		});
+
 		var interval = setInterval(module.exports.process_keen_data, 60 * 1000);
+		var interval2 = setInterval(module.exports.process_wider_keen_data, 60 * 60 * 1000);
 	},
 
-	get_full_deck_data: function(query, filename){
 
 
+	convert_keen_result_to_data_array: function(res){
+    	var keen_data = {};
 
+    	for(key in res.result){
+    		row = res.result[key];
+
+    		time = row.timeframe.start;
+    		for(val_key in row.value){
+    			value_row = row.value[val_key];
+    			keen_deck_name = value_row.deck;
+
+    			keen_deck_available = value_row.result;
+
+    			if(keen_deck_available === null){
+    				continue;
+    			}
+
+    			if(typeof keen_data[keen_deck_name] == 'undefined'){
+    				keen_data[keen_deck_name] = {};
+    			}
+    			keen_data[keen_deck_name][time] = keen_deck_available;
+    		}
+    	}
+    	return keen_data;
 	},
 
+	write_keen_data_to_file: function(data, filename){
+    	fs.writeFile(filename, JSON.stringify(data, null, 4), function(err) {
+		    if(err) {
+		      console.log(err);
+		    } else {
+		      console.log("Updated Keen Data JSON");
+				module.exports.io.emit('keen-update', data);
+				console.log("Sent keen update to clients via websocket");
+		    }
+		});
+	},
 
 	process_keen_data: function(){
 		console.log("Checking Keen Data");
@@ -47,9 +92,9 @@ module.exports = {
 										{
 											eventCollection: "deck_status",
 											groupBy: "deck",
-											interval: "every_1_minutes",
+											interval: "every_5_minutes",
 											targetProperty: "available",
-											timeframe: "this_10_minutes",
+											timeframe: "this_60_minutes",
 											timezone: "US/Eastern"
 										});
 
@@ -62,38 +107,45 @@ module.exports = {
 					if(JSON.stringify(res) != JSON.stringify(module.exports.active_keen_data) ){
 		    	      	module.exports.active_keen_data = res;
 		    	      
-				    	var keen_data = {};
+				    	var keen_data = module.exports.convert_keen_result_to_data_array(res);
 
-				    	for(key in res.result){
-				    		row = res.result[key];
+				    	module.exports.write_keen_data_to_file(keen_data, 'public/data/keen_data.json');
 
-				    		time = row.timeframe.start;
-				    		for(val_key in row.value){
-				    			value_row = row.value[val_key];
-				    			keen_deck_name = value_row.deck;
+				    }
+				    else{
+				    	console.log("No Keen Data Update");
+				    }
+				}
+			});
+		});
+	},
 
-				    			keen_deck_available = value_row.result;
+	process_wider_keen_data: function(){
+		console.log("Checking Keen Data (WIDER)");
+		Keen.ready(function(){
+			var query = new Keen.Query("average", 
+										{
+											eventCollection: "deck_status",
+											groupBy: "deck",
+											interval: "every_5_minutes",
+											targetProperty: "minimum",
+											timeframe: "this_15_days",
+											timezone: "US/Eastern"
+										});
 
-				    			if(keen_deck_available === null){
-				    				continue;
-				    			}
+			module.exports.client.run(query, function(err, res){
+			    if (err) {
+			    	console.log(err);
+			      // there was an error!
+			    }
+			    else {
+					if(JSON.stringify(res) != JSON.stringify(module.exports.active_keen_data) ){
+		    	      	module.exports.active_keen_data = res;
+		    	      
+				    	var keen_data = module.exports.convert_keen_result_to_data_array(res);
 
-				    			if(typeof keen_data[keen_deck_name] == 'undefined'){
-				    				keen_data[keen_deck_name] = {};
-				    			}
-				    			keen_data[keen_deck_name][time] = keen_deck_available;
-				    		}
-				    	}
+				    	module.exports.write_keen_data_to_file(keen_data, 'public/data/keen_data_long.json');
 
-				    	fs.writeFile('public/data/keen_data.json', JSON.stringify(keen_data, null, 4), function(err) {
-						    if(err) {
-						      console.log(err);
-						    } else {
-						      console.log("Updated Keen Data JSON");
-								module.exports.io.emit('keen-update', keen_data);
-								console.log("Sent keen update to clients via websocket");
-						    }
-						}); 
 				    }
 				    else{
 				    	console.log("No Keen Data Update");
