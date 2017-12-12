@@ -41,7 +41,7 @@ module.exports = {
 		    }
 		});
 
-		var interval = setInterval(module.exports.process_keen_data, 60 * 1000);
+		var interval = setInterval(module.exports.process_keen_data, 3 * 60 * 1000);
 		var interval2 = setInterval(module.exports.process_wider_keen_data, 60 * 60 * 1000);
 	},
 
