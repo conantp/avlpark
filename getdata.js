@@ -21,7 +21,7 @@ module.exports = {
 			// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
 		});
 
-		var interval = setInterval(module.exports.check_space_data, 10 * 1000);
+		var interval = setInterval(module.exports.check_space_data, 60 * 1000);
 	},
 
 	check_space_data: function(){
