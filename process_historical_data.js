@@ -1,29 +1,26 @@
-var fs = require('fs');
-var tabletop = require('tabletop');
+var fs = require("fs");
+var tabletop = require("tabletop");
 
 // var dateFormat = require('dateFormat');
 var processedData = {};
 
-  var currentDate = new Date();
-  var currentMonth = false;
-  var currentDay = false;
-  var currentYear = false;
-  var currentWeek = false;
-  var activeData = {};
+var currentDate = new Date();
+var currentMonth = false;
+var currentDay = false;
+var currentYear = false;
+var currentWeek = false;
+var activeData = {};
 var processedData = {};
-      var month_data = {};
-  var monthDataByDeck = {};
+var month_data = {};
+var monthDataByDeck = {};
 
 
 function setDateVars(){
     var d = new Date();
-
-
-    currentDay = d.getDay();
-    currentWeek = d.getWeekNumber();
-    currentYear = d.getFullYear();
-  }
-
+	currentDay = d.getDay();
+	currentWeek = d.getWeekNumber();
+	currentYear = d.getFullYear();
+}
 
 
 Date.prototype.getWeekNumber = function(){
@@ -33,42 +30,34 @@ Date.prototype.getWeekNumber = function(){
     return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
 };
 
+function formatDate(date) {
+	var d = new Date(date),
+	var year = d.getFullYear();
+	var week = d.getWeekNumber();
+	var day = d.getDay();
 
 
-  function formatDate(date) {
-    var d = new Date(date),
-        // month = '' + (d.getMonth() + 1),
-        // day = '' + d.getDate(),
-        year = d.getFullYear();
+	return [year, week, day].join('-');
+}
 
-    // if (month.length < 2) month = '0' + month;
-    // if (day.length < 2) day = '0' + day;
+function showInfo(data2, tabletop) {
+	// alert("Successfully processed!")
+	console.log('go');
+	data = tabletop.sheets("For App").all();	
 
-    week = d.getWeekNumber();
-    day = d.getDay();
+	for (index in data){
+		row = data[index];
+		processedData[formatDate(row.Date)] = row;
+	}
 
+	console.log(processedData);
+	buildActiveData();
+	buildDayOfWeekAverage();
+	buildMonthAverage();
 
-    return [year, week, day].join('-');
-  }
-
-  function showInfo(data2, tabletop) {
-    // alert("Successfully processed!")
-    console.log('go');
-    data = tabletop.sheets("For App").all();	
-
-    for (index in data){
-    	row = data[index];
-    	processedData[formatDate(row.Date)] = row;
-    }
-
-    console.log(processedData);
-    buildActiveData();
-    buildDayOfWeekAverage();
-    buildMonthAverage();
-
-    activeData.monthDataByDeck = monthDataByDeck;
+	activeData.monthDataByDeck = monthDataByDeck;
 	write_data_to_file('public/data/historical_data.json', activeData);
-  }
+}
 
   function write_data_to_file(outputFilename, data){
 	fs.writeFile(outputFilename, JSON.stringify(data, null, 4), function(err) {
