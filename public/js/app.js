@@ -118,7 +118,6 @@ function renderKeenData(){
 	};
 
 	for(var deck in keen_data){
-
 		if ({}.hasOwnProperty.call(keen_data, deck)) {
 			var keys = [];
 	
