@@ -69,8 +69,8 @@ var io = require("socket.io")(http);
 io.on("connection", function(socket){
   console.log("a user connected");
 
-  // console.log( getKeenData.active_spaces_data);
-  io.emit("spaces-update", getKeenData.active_spaces_data);
+  // console.log( getKeenData.activeSpacesData);
+  io.emit("spaces-update", getKeenData.activeSpacesData);
 
   socket.on("disconnect", function(){
       console.log("user disconnected");
