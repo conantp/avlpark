@@ -5,34 +5,30 @@
   }}();
 	// End Segment Analytics
 
-  var processed_data = {};
 
-  var current_date = new Date();
-  var current_month = false;
-  var current_day = false;
-  var current_year = false;
-  var current_week = false;
-  var month_data_by_deck = {};
+	if typeof active_data === typeof undefined{
+		active_data = {};
+	}
+
+  var processedData = {};
+
+  var currentDate = new Date();
+  var currentMonth = false;
+  var currentDay = false;
+  var currentYear = false;
+  var currentWeek = false;
+  var monthDataByDeck = {};
 var myLineChart = [];
 
-var deck_realtime_graphs = {};
+var deckRealtimeGraphs = {};
 
-var deck_capacity = {
-'Civic Center': 550,
-'Rankin Ave': 262,
-'Biltmore Ave': 404,
-'Wall Street': 221 
+var deckCapacity = {
+	"Civic Center": 550,
+	"Rankin Ave": 262,
+	"Biltmore Ave": 404,
+	"Wall Street": 221 
 };
 
-// window.onload = function() { init() };
-
-function init() {
-	month_data_by_deck = active_data.month_data_by_deck;
-	delete active_data.month_data_by_deck;
-	setDateVars();
-	getKeenData();
-
-}
 
 Date.prototype.getWeekNumber = function(){
     var d = new Date(+this);
@@ -42,28 +38,20 @@ Date.prototype.getWeekNumber = function(){
 };
 
 function setDateVars(){
-var d = new Date();
+	var d = new Date();
 
-
-current_day = d.getDay();
-current_week = d.getWeekNumber();
-current_year = d.getFullYear();
+	currentDay = d.getDay();
+	currentWeek = d.getWeekNumber();
+	currentYear = d.getFullYear();
 }
 
 function formatDate(date) {
-var d = new Date(date),
-    // month = '' + (d.getMonth() + 1),
-    // day = '' + d.getDate(),
-    year = d.getFullYear();
+	var d = new Date(date),
+	var year = d.getFullYear();
+	var week = d.getWeekNumber();
+	var day = d.getDay();
 
-// if (month.length < 2) month = '0' + month;
-// if (day.length < 2) day = '0' + day;
-
-week = d.getWeekNumber();
-day = d.getDay();
-
-
-return [year, week, day].join('-');
+	return [year, week, day].join('-');
 }
 
 
@@ -154,11 +142,11 @@ function renderKeenData(){
 		};
 		chart_data3[deck] = temp_data_3;
 
-		console.log(deck, deck_capacity[deck]);
+		console.log(deck, deckCapacity[deck]);
 
-		options3.scaleStepWidth = Math.ceil(deck_capacity[deck]/options3.scaleSteps);
+		options3.scaleStepWidth = Math.ceil(deckCapacity[deck]/options3.scaleSteps);
 
-		deck_realtime_graphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chart_data3[deck], options3);
+		deckRealtimeGraphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chart_data3[deck], options3);
 	}
 }
 
@@ -190,12 +178,12 @@ function checkForNewData(data){
 			console.log('labels', last_label, last_key);	
 
 			if(last_label == last_key){
-				deck_realtime_graphs[deck_key].datasets[0].points[deck_realtime_graphs[deck_key].datasets[0].points.length - 1].value = new_score;
-				deck_realtime_graphs[deck_key].update();
+				deckRealtimeGraphs[deck_key].datasets[0].points[deckRealtimeGraphs[deck_key].datasets[0].points.length - 1].value = new_score;
+				deckRealtimeGraphs[deck_key].update();
 			}	
 			else{
-				deck_realtime_graphs[deck_key].removeData();
-				deck_realtime_graphs[deck_key].addData([parseInt(new_score)], last_key )
+				deckRealtimeGraphs[deck_key].removeData();
+				deckRealtimeGraphs[deck_key].addData([parseInt(new_score)], last_key )
 			}
 
 		}
@@ -206,14 +194,14 @@ function checkForNewData(data){
 }
 
 function renderData(){
-  	$(".current-date").html(dateFormat(current_date, "dddd, mmmm dS") );
+  	$(".current-date").html(dateFormat(currentDate, "dddd, mmmm dS") );
 
 	// $("#parking-deck-list").before("<div id='chart3' width=\"100%\" height=\"800\" style='height: 800px'></div>");
 
   	for (deck in active_data){
   		row = active_data[deck];
 
-  		score = 10 - parseFloat(row['2015-'+current_day].replace("%", "")) / 10;
+  		score = 10 - parseFloat(row['2015-'+currentDay].replace("%", "")) / 10;
   		score = score.toFixed(1);
 
   		deck_key = deck;
@@ -435,7 +423,7 @@ function renderData(){
 		            strokeColor: "rgba(100, 255, 100, 1.0)",
 		            highlightFill: "rgba(255,255,255,0.7)",
 		            highlightStroke:  "rgba(255,255,255,1)",
-		            data: month_data_by_deck[deck]
+		            data: monthDataByDeck[deck]
 		        }
 		    ]
 		};
@@ -479,6 +467,20 @@ function renderData(){
 
 	});
   }
+
+
+
+
+
+// window.onload = function() { init() };
+
+function init() {
+	monthDataByDeck = active_data.monthDataByDeck;
+	delete active_data.monthDataByDeck;
+	setDateVars();
+	getKeenData();
+
+}
 
   init();
 

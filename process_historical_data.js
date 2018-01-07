@@ -2,26 +2,26 @@ var fs = require('fs');
 var tabletop = require('tabletop');
 
 // var dateFormat = require('dateFormat');
-var processed_data = {};
+var processedData = {};
 
-  var current_date = new Date();
-  var current_month = false;
-  var current_day = false;
-  var current_year = false;
-  var current_week = false;
+  var currentDate = new Date();
+  var currentMonth = false;
+  var currentDay = false;
+  var currentYear = false;
+  var currentWeek = false;
   var active_data = {};
-var processed_data = {};
+var processedData = {};
       var month_data = {};
-  var month_data_by_deck = {};
+  var monthDataByDeck = {};
 
 
 function setDateVars(){
     var d = new Date();
 
 
-    current_day = d.getDay();
-    current_week = d.getWeekNumber();
-    current_year = d.getFullYear();
+    currentDay = d.getDay();
+    currentWeek = d.getWeekNumber();
+    currentYear = d.getFullYear();
   }
 
 
@@ -58,15 +58,15 @@ Date.prototype.getWeekNumber = function(){
 
     for (index in data){
     	row = data[index];
-    	processed_data[formatDate(row.Date)] = row;
+    	processedData[formatDate(row.Date)] = row;
     }
 
-    console.log(processed_data);
+    console.log(processedData);
     buildActiveData();
     buildDayOfWeekAverage();
     buildMonthAverage();
 
-    active_data.month_data_by_deck = month_data_by_deck;
+    active_data.monthDataByDeck = monthDataByDeck;
 	write_data_to_file('public/data/historical_data.json', active_data);
   }
 
@@ -83,7 +83,7 @@ Date.prototype.getWeekNumber = function(){
   function buildActiveData(){
     year = 2012;
 
-    for(column in processed_data["2015-1-0"]){
+    for(column in processedData["2015-1-0"]){
       if( column == "Date" || 
         column == "Day" || 
         column == "Week" || 
@@ -96,10 +96,10 @@ Date.prototype.getWeekNumber = function(){
     }
 
       while(year <= 2015){
-        search_str = year + "-" + current_week + "-" + current_day;
+        search_str = year + "-" + currentWeek + "-" + currentDay;
         console.log(search_str);
 
-        for(column in processed_data[search_str]){
+        for(column in processedData[search_str]){
           if( column == "Date" || 
             column == "Day" || 
             column == "Week" || 
@@ -107,12 +107,12 @@ Date.prototype.getWeekNumber = function(){
             column == "Year"){
           continue;
         }
-        // if(processed_data[search_str][column] > 0){
-            active_data[column][year] = processed_data[search_str][column];
+        // if(processedData[search_str][column] > 0){
+            active_data[column][year] = processedData[search_str][column];
         // }
         }
 
-        // active_data[year] = processed_data[search_str];
+        // active_data[year] = processedData[search_str];
 
         year++;
       }
@@ -186,15 +186,15 @@ Date.prototype.getWeekNumber = function(){
 		for(deck_key in month['decks']){
 			deck = month['decks'][deck_key];
 
-			if(typeof month_data_by_deck[deck_key] == 'undefined'){
-				month_data_by_deck[deck_key] = {};
+			if(typeof monthDataByDeck[deck_key] == 'undefined'){
+				monthDataByDeck[deck_key] = {};
 			}
 
 			if(isNaN(deck['average']) ){
 				continue;
 			}
 
-			month_data_by_deck[deck_key][key] = deck['average'].toFixed(0);
+			monthDataByDeck[deck_key][key] = deck['average'].toFixed(0);
 
 		}
 	}
@@ -212,7 +212,7 @@ Date.prototype.getWeekNumber = function(){
 
 		  		search_str = year + "-" + week + "-" + day;
 
-		  		for(deck in processed_data[search_str]){
+		  		for(deck in processedData[search_str]){
 		  			if(	deck == "Date" || 
 		  				deck == "Day" || 
 		  				deck == "Week" || 
@@ -220,7 +220,7 @@ Date.prototype.getWeekNumber = function(){
 		  				deck == "Year"){
 						continue;
 					}
-					value = parseFloat(processed_data[search_str][deck].replace("%", "") );
+					value = parseFloat(processedData[search_str][deck].replace("%", "") );
 
 					if(typeof active_data[deck][day] == "undefined"){
 						active_data[deck][day] = 0;
@@ -231,7 +231,7 @@ Date.prototype.getWeekNumber = function(){
 		  			active_data[deck][day+"_count"]++;
 		  		}
 
-		  		// active_data[year] = processed_data[search_str];
+		  		// active_data[year] = processedData[search_str];
 
 		  		week++;
 		  	}
