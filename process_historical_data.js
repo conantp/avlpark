@@ -67,9 +67,9 @@ function showInfo(data2, tabletop) {
   }
 
   function buildActiveData(){
-	year = 2012;
+	var year = 2012;
 
-	for(column in processedData["2015-1-0"]){
+	for(var column in processedData["2015-1-0"]){
 	  if( column == "Date" || 
 		column == "Day" || 
 		column == "Week" || 
@@ -81,11 +81,11 @@ function showInfo(data2, tabletop) {
 	  activeData[column] = {};
 	}
 
-	  while(year <= 2015){
+	while(year <= 2015){
 		search_str = year + "-" + currentWeek + "-" + currentDay;
 		console.log(search_str);
 
-		for(column in processedData[search_str]){
+		for(var column in processedData[search_str]){
 		  if( column == "Date" || 
 			column == "Day" || 
 			column == "Week" || 
@@ -107,7 +107,7 @@ function showInfo(data2, tabletop) {
 
 
   function buildMonthAverage(){
-	for(index in data){
+	for(var index in data){
 		row = data[index];
 
 		var d = new Date(row.Date);
@@ -119,7 +119,7 @@ function showInfo(data2, tabletop) {
 
 		key = row_yr + "-" + row_mo;
 
-		for(deck in row){
+		for(var deck in row){
 				if(	deck == "Date" || 
 					deck == "Day" || 
 					deck == "Week" || 
@@ -154,7 +154,7 @@ function showInfo(data2, tabletop) {
 
 
 
-	for(key in monthData){
+	for(var key in monthData){
 		month = monthData[key];
 		for(deck_key in month["decks"]){
 			deck = month["decks"][deck_key];
@@ -164,12 +164,12 @@ function showInfo(data2, tabletop) {
 	}
 
 	// Repeat the loop, build month data
-	for(key in monthData){
+	for(var key in monthData){
 		if(key.indexOf("2015-") !== 0 && key.indexOf("2014-") !== 0){
 			continue;
 		}
 		month = monthData[key];
-		for(deck_key in month["decks"]){
+		for(var deck_key in month["decks"]){
 			deck = month["decks"][deck_key];
 
 			if(typeof monthDataByDeck[deck_key] == "undefined"){
@@ -188,7 +188,7 @@ function showInfo(data2, tabletop) {
   }
 
   function buildDayOfWeekAverage(){
-  	year = 2012;
+  	var year = 2012;
 
   	while(year < 2016){
 	  	day = 0;
@@ -198,7 +198,7 @@ function showInfo(data2, tabletop) {
 
 		  		search_str = year + "-" + week + "-" + day;
 
-		  		for(deck in processedData[search_str]){
+		  		for(var deck in processedData[search_str]){
 		  			if(	deck == "Date" || 
 		  				deck == "Day" || 
 		  				deck == "Week" || 
@@ -222,7 +222,7 @@ function showInfo(data2, tabletop) {
 		  		week++;
 		  	}
 
-	  		for(deck in activeData){
+	  		for(var deck in activeData){
 				value = activeData[deck][day] / activeData[deck][day+"_count"];
 
 			 	dateString = year+"-"+day;//dateFormat(day, "dddd");
