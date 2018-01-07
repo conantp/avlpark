@@ -22,9 +22,11 @@ app.get("/about", function(request, response) {
 app.get("/stats", function(request, response) {
     var obj;
     fs.readFile("public/data/keen_data_long.json", "utf8", function (err, data) {
-      if (err) throw err;
+      if (err){
+        throw err;
+      } 
       obj = JSON.parse(data);
-        response.render("stats", { keen_data: obj});
+        response.render("stats", { keenData: obj});
     });
 });
 
@@ -50,7 +52,7 @@ app.get("/", function(request, response) {
 
 
 	// response.sendFile(__dirname + "/public/html/index.html");
-})
+});
 
 app.get("/data", function(request, response) {
   response.sendFile(__dirname + "/public/data/keen_data.json");
@@ -84,7 +86,7 @@ processKeenData.monitorProcessKeenData(io);
 getKeenData.check_space_data();
 
 http.listen(app.get("port"), function() {
-  console.log("Node app is running at localhost:" + app.get("port"))
+  console.log("Node app is running at localhost:" + app.get("port"));
 })
 
 
