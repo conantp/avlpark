@@ -121,7 +121,7 @@ function renderKeenData(){
 		var keys = [];
 		for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
 
-		temp_data_3 = {
+		var tempData3 = {
 			labels: keys,
 			datasets: [
 				{
@@ -134,13 +134,13 @@ function renderKeenData(){
 				}
 			]
 		};
-		chart_data3[deck] = temp_data_3;
+		chartData3[deck] = tempData3;
 
 		console.log(deck, deckCapacity[deck]);
 
 		options3.scaleStepWidth = Math.ceil(deckCapacity[deck]/options3.scaleSteps);
 
-		deckRealtimeGraphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chart_data3[deck], options3);
+		deckRealtimeGraphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chartData3[deck], options3);
 	}
 }
 
@@ -153,16 +153,16 @@ function checkForNewData(data){
 
 		for(deck_key in data){
 			// Get last label
-			var last_label = chart_data3[deck_key].labels[chart_data3[deck_key].labels.length - 1];
+			var last_label = chartData3[deck_key].labels[chartData3[deck_key].labels.length - 1];
 
 
 			var keys = [];
 			for(var k in keen_data[deck_key]) keys.push(k.substr(11, 5));
 
-			chart_data3[deck_key].labels = keys;
-			chart_data3[deck_key].datasets[0].data = keen_data[deck_key];
+			chartData3[deck_key].labels = keys;
+			chartData3[deck_key].datasets[0].data = keen_data[deck_key];
 
-			new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
+			var new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
 
 			// $('li.parking-deck[data-deck-key="'+deck_key+'"]').find('.score').html(new_score);
 
@@ -381,17 +381,17 @@ function renderData(){
 
 	};
 
-	chart_data = [];
-	chart_data2 = [];
-	chart_data3 = {};
+	chartData = [];
+	chartData2 = [];
+	chartData3 = {};
 
 
 	// for(year in activeData["Civic Center"]['year_data']){
-	// 	chart_data.push(activeData["Civic Center"]['year_data'][year]);
+	// 	chartData.push(activeData["Civic Center"]['year_data'][year]);
 	// }
 	for(deck in activeData){
 
-		temp_data = {
+		tempData = {
 			labels: ["Su.", "Mo.", "Tu.", "We.", "Th.", "Fr.", "Sa."],
 			datasets: [
 				{
@@ -405,7 +405,7 @@ function renderData(){
 			]
 		};
 
-		temp_data_2 = {
+		tempData2 = {
 			labels: ["14-Jan", "14-Feb", "14-Mar", "14-Apr", "14-May", "14-Jun", "14-Jul", "14-Aug", "14-Sep", "14-Oct", "14-Nov", "14-Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
 			datasets: [
 				{
@@ -419,8 +419,8 @@ function renderData(){
 			]
 		};
 
-		chart_data.push(temp_data);
-		chart_data2.push(temp_data_2);
+		chartData.push(tempData);
+		chartData2.push(tempData2);
 
 	}
 
@@ -436,7 +436,7 @@ function renderData(){
 
 		// Get the context of the canvas element we want to select
 
-		// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chart_data[i++], options) );
+		// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chartData[i++], options) );
 	
 	});
 
@@ -445,7 +445,7 @@ function renderData(){
 
 		// Get the context of the canvas element we want to select
 
-		// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data2[i++], options2) );
+		// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chartData2[i++], options2) );
 	
 	});
 
