@@ -117,30 +117,33 @@ function renderKeenData(){
 
 	};
 
-	for(deck in keen_data){
+	for(var deck in keen_data){
 		var keys = [];
-		for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
 
-		var tempData3 = {
-			labels: keys,
-			datasets: [
-				{
-					label: "My First dataset",
-					fillColor: "rgba(120, 230, 120, 0.5)",
-					strokeColor: "rgba(100, 255, 100, 1.0)",
-					highlightFill: "rgba(255,255,255,0.7)",
-					highlightStroke:  "rgba(255,255,255,1)",
-					data: keen_data[deck]
-				}
-			]
-		};
-		chartData3[deck] = tempData3;
+	    if ({}.hasOwnProperty.call(keen_data, deck)) {
+			for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
 
-		console.log(deck, deckCapacity[deck]);
+			var tempData3 = {
+				labels: keys,
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(120, 230, 120, 0.5)",
+						strokeColor: "rgba(100, 255, 100, 1.0)",
+						highlightFill: "rgba(255,255,255,0.7)",
+						highlightStroke:  "rgba(255,255,255,1)",
+						data: keen_data[deck]
+					}
+				]
+			};
+			chartData3[deck] = tempData3;
 
-		options3.scaleStepWidth = Math.ceil(deckCapacity[deck]/options3.scaleSteps);
+			console.log(deck, deckCapacity[deck]);
 
-		deckRealtimeGraphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chartData3[deck], options3);
+			options3.scaleStepWidth = Math.ceil(deckCapacity[deck]/options3.scaleSteps);
+
+			deckRealtimeGraphs[deck] = new Chart($('li.parking-deck[data-deck-key="'+deck+'"]').find('.chart3')[0].getContext("2d")).Line(chartData3[deck], options3);
+		}
 	}
 }
 
@@ -151,7 +154,7 @@ function checkForNewData(data){
 
 		keen_data = data;
 
-		for(deck_key in data){
+		for(var deck_key in data){
 			// Get last label
 			var last_label = chartData3[deck_key].labels[chartData3[deck_key].labels.length - 1];
 
@@ -237,7 +240,7 @@ function renderData(){
 						html += "<small class='text-center display-block'>" + "Max use in previous years</small>";			  		
 						html += "<ul class='year-list'>";
 							i = 0;
-							for(year in activeData[deck]){
+							for(var year in activeData[deck]){
 								if(i++ > 3){
 									break;
 								}
@@ -389,7 +392,7 @@ function renderData(){
 	// for(year in activeData["Civic Center"]['year_data']){
 	// 	chartData.push(activeData["Civic Center"]['year_data'][year]);
 	// }
-	for(deck in activeData){
+	for(var deck in activeData){
 
 		tempData = {
 			labels: ["Su.", "Mo.", "Tu.", "We.", "Th.", "Fr.", "Sa."],
@@ -485,7 +488,7 @@ var socket = io.connect();
 
 function updateScoreData(data){
 	var total_available = 0;
-	for(key in data.decks){
+	for(var key in data.decks){
 		row = data.decks[key];
 		total_available += parseInt(row.available);
 		$('li.parking-deck[data-deck-key="'+row.name+'"]').find('.score').html(parseInt(row.available) );
