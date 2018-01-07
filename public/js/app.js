@@ -120,7 +120,7 @@ function renderKeenData(){
 	for(var deck in keen_data){
 		var keys = [];
 
-	    if ({}.hasOwnProperty.call(keen_data, deck)) {
+		if ({}.hasOwnProperty.call(keen_data, deck)) {
 			for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
 
 			var tempData3 = {
