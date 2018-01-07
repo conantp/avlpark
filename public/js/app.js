@@ -21,6 +21,10 @@ var myLineChart = [];
 
 var deckRealtimeGraphs = {};
 
+var chartData;
+var chartData2;
+var chartData3;
+
 var deckCapacity = {
 	"Civic Center": 550,
 	"Rankin Ave": 262,
@@ -121,7 +125,9 @@ function renderKeenData(){
 		if ({}.hasOwnProperty.call(keen_data, deck)) {
 			var keys = [];
 	
-			for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
+			for(var k in keen_data[deck]){
+				keys.push(k.substr(11, 5));
+			}
 
 			var tempData3 = {
 				labels: keys,
