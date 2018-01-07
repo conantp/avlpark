@@ -57,7 +57,7 @@ module.exports = {
 						var deckName = deckData.name;
 						var deckAvailable = parseInt(deckData.available);
 
-						var keen_deck_event = { 
+						var keenDeckEvent = { 
 												deck: deckName, 
 												available: deckAvailable,
 												keen: { 
@@ -70,11 +70,7 @@ module.exports = {
 											};
 
 						keenEventAllDecks[deckName] = deckAvailable;
-
-						// PRC Disabled
-						if(true){
-							keenDeckEvents.deck_status.push(keen_deck_event);
-						}
+						keenDeckEvents.deck_status.push(keenDeckEvent);
 					}
 
 					keenDeckEvents.deck_status_all.push(keenEventAllDecks);
