@@ -56,57 +56,49 @@ function showInfo(data2, tabletop) {
 	write_data_to_file("public/data/historical_data.json", activeData);
 }
 
-  function write_data_to_file(outputFilename, data){
+function write_data_to_file(outputFilename, data){
 	fs.writeFile(outputFilename, JSON.stringify(data, null, 4), function(err) {
 		if(err) {
-		  console.log(err);
+			console.log(err);
 		} else {
-		  console.log("JSON saved to " + outputFilename);
+			console.log("JSON saved to " + outputFilename);
 		}
 	}); 
-  }
+}
 
-  function buildActiveData(){
+function buildActiveData(){
 	var year = 2012;
 
 	for(var column in processedData["2015-1-0"]){
-	  if( column == "Date" || 
-		column == "Day" || 
-		column == "Week" || 
-		column == "Month" || 
-		column == "Year"){
-		continue;
-	  }
-
-	  activeData[column] = {};
-	}
-
-	while(year <= 2015){
-		search_str = year + "-" + currentWeek + "-" + currentDay;
-		console.log(search_str);
-
-		for(var column in processedData[search_str]){
-		  if( column == "Date" || 
+		if( column == "Date" || 
 			column == "Day" || 
 			column == "Week" || 
 			column == "Month" || 
 			column == "Year"){
-		  continue;
+				continue;
 		}
-		// if(processedData[search_str][column] > 0){
-			activeData[column][year] = processedData[search_str][column];
-		// }
-		}
-
-		// activeData[year] = processedData[search_str];
-
-		year++;
-	  }
-	  console.log(activeData);
+		activeData[column] = {};
 	}
 
+	while(year <= 2015){
+		var search_str = year + "-" + currentWeek + "-" + currentDay;
 
-  function buildMonthAverage(){
+		for(var column in processedData[search_str]){
+			if( column == "Date" || 
+				column == "Day" || 
+				column == "Week" || 
+				column == "Month" || 
+				column == "Year"){
+					continue;
+			}
+			activeData[column][year] = processedData[search_str][column];
+		}
+		year++;
+	}
+	console.log(activeData);
+}
+
+function buildMonthAverage(){
 	for(var index in data){
 		row = data[index];
 
@@ -181,30 +173,27 @@ function showInfo(data2, tabletop) {
 			}
 
 			monthDataByDeck[deck_key][key] = deck["average"].toFixed(0);
-
 		}
 	}
+}
 
-  }
+function buildDayOfWeekAverage(){
+	var year = 2012;
 
-  function buildDayOfWeekAverage(){
-  	var year = 2012;
+	while(year < 2016){
+		var day = 0;
+		while(day < 7){
+			var week = 0;
+			while(week <= 52){
+				search_str = year + "-" + week + "-" + day;
 
-  	while(year < 2016){
-	  	day = 0;
-	  	while(day < 7){
-		  	week = 0;
-		  	while(week <= 52){
-
-		  		search_str = year + "-" + week + "-" + day;
-
-		  		for(var deck in processedData[search_str]){
-		  			if(	deck == "Date" || 
-		  				deck == "Day" || 
-		  				deck == "Week" || 
-		  				deck == "Month" || 
-		  				deck == "Year"){
-						continue;
+				for(var deck in processedData[search_str]){
+					if(	deck == "Date" || 
+						deck == "Day" || 
+						deck == "Week" || 
+						deck == "Month" || 
+						deck == "Year"){
+							continue;
 					}
 					value = parseFloat(processedData[search_str][deck].replace("%", "") );
 
@@ -213,61 +202,54 @@ function showInfo(data2, tabletop) {
 						activeData[deck][day+"_count"] = 0;
 					}
 
-		  			activeData[deck][day] += value;
-		  			activeData[deck][day+"_count"]++;
-		  		}
+					activeData[deck][day] += value;
+					activeData[deck][day+"_count"]++;
+				}
+				week++;
+			}
 
-		  		// activeData[year] = processedData[search_str];
-
-		  		week++;
-		  	}
-
-	  		for(var deck in activeData){
+			for(var deck in activeData){
 				value = activeData[deck][day] / activeData[deck][day+"_count"];
 
-			 	dateString = year+"-"+day;//dateFormat(day, "dddd");
+				dateString = year+"-"+day;//dateFormat(day, "dddd");
 
-			 	if(typeof activeData[deck]["year_data"] == "undefined"){
-			 		activeData[deck]["year_data"] = {};
-			 	}
-			 	if(typeof activeData[deck]["year_data"][year] == "undefined"){
-			 		activeData[deck]["year_data"][year] = {};
-			 	}
+				if(typeof activeData[deck]["year_data"] == "undefined"){
+					activeData[deck]["year_data"] = {};
+				}
+				if(typeof activeData[deck]["year_data"][year] == "undefined"){
+					activeData[deck]["year_data"][year] = {};
+				}
 
-			 	if(value > 0){
-					activeData[deck][dateString] = value.toFixed(2) + "%";
-					activeData[deck]["year_data"][year][day] = (100 - value).toFixed(2);
-			 	}
+				if(value > 0){
+				activeData[deck][dateString] = value.toFixed(2) + "%";
+				activeData[deck]["year_data"][year][day] = (100 - value).toFixed(2);
+				}
 				delete activeData[deck][day];
 				delete activeData[deck][day+"_count"];
 			}
-		  	day++;
+			day++;
 		}
 		year++;
 	}
+}
 
-  }
-
-  var public_spreadsheet_url = "https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml?gid=809388972&single=true";
-
+var public_spreadsheet_url = "https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml?gid=809388972&single=true";
 
 var do_data_process = function(){
 
-	console.log("Processing sheet data");
-	setDateVars();
+console.log("Processing sheet data");
+setDateVars();
 
-	  tabletop.init( { key: public_spreadsheet_url,
-					 callback: showInfo,
-					 simpleSheet: false } );
-
-
-	 
-
+tabletop.init( 
+				{ 
+					key: public_spreadsheet_url,
+					callback: showInfo,
+					simpleSheet: false 
+				});
 };
 
 do_data_process();
 
 var interval = setInterval(do_data_process, 10 * 1000);
-
 
 //https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml
