@@ -54,18 +54,18 @@ module.exports = {
 			time = row.timeframe.start;
 			for(val_key in row.value){
 				value_row = row.value[val_key];
-				keen_deck_name = value_row.deck;
+				keen_deckName = value_row.deck;
 
-				keen_deck_available = value_row.result;
+				keen_deckAvailable = value_row.result;
 
-				if(keen_deck_available === null){
+				if(keen_deckAvailable === null){
 					continue;
 				}
 
-				if(typeof keen_data[keen_deck_name] == 'undefined'){
-					keen_data[keen_deck_name] = {};
+				if(typeof keen_data[keen_deckName] == 'undefined'){
+					keen_data[keen_deckName] = {};
 				}
-				keen_data[keen_deck_name][time] = keen_deck_available;
+				keen_data[keen_deckName][time] = keen_deckAvailable;
 			}
 		}
 		return keen_data;

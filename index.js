@@ -66,7 +66,7 @@ io.on("connection", function(socket){
 	});
 });
 
-getKeenData.monitor_check_space_data(io);
+getKeenData.monitorCheckSpaceData(io);
 processKeenData.monitorProcessKeenData(io);
 getKeenData.check_space_data();
 

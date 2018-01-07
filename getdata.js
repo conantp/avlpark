@@ -1,7 +1,7 @@
 var request = require("request");
 var Keen = require("keen-js");
 
-var keen_data = {};
+var keenData = {};
 
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
 	dataFeedUrl: "https://s3.amazonaws.com/asheville-parking-decks/spaces.json",
 	activeSpacesData: false,
 	io: false,
-	monitor_check_space_data: function(io){
+	monitorCheckSpaceData: function(io){
 		module.exports.io = io;
 
 		module.exports.client  = new Keen({
@@ -45,45 +45,43 @@ module.exports = {
 						return;
 					}
 
-					var keen_deck_events = {'deck_status': [], 'deck_status_all' : []};
+					var keenDeckEvents = {"deck_status": [], "deck_status_all" : []};
 
-					// console.log(body) // Print the json response
-
-					var keen_event_all_decks = {
+					var keenEventAllDecks = {
 													keen: { timestamp: keenTs}
 												};
 
-					for(key in body.decks){
-						deck_data = body.decks[key];
+					for(var key in body.decks){
+						var deckData = body.decks[key];
 
-						deck_name = deck_data.name;
-						deck_available = parseInt(deck_data.available);
+						var deckName = deckData.name;
+						var deckAvailable = parseInt(deckData.available);
 
 						var keen_deck_event = { 
-												deck: deck_name, 
-												available: deck_available,
+												deck: deckName, 
+												available: deckAvailable,
 												keen: { 
 														timestamp: keenTs,
 														location: {
-															coordinates: [deck_data.coords[1], deck_data.coords[0]]
+															coordinates: [deckData.coords[1], deckData.coords[0]]
 														} 
 
 													}
 											};
 
-						keen_event_all_decks[deck_name] = deck_available;
+						keenEventAllDecks[deckName] = deckAvailable;
 						// console.log(keen_deck_event);
 
 						// PRC Disabled
 						if(true){
-							keen_deck_events.deck_status.push(keen_deck_event);
+							keenDeckEvents.deck_status.push(keen_deck_event);
 						}
 					}
 
-					keen_deck_events.deck_status_all.push(keen_event_all_decks);
-					// console.log(keen_deck_events);
+					keenDeckEvents.deck_status_all.push(keenEventAllDecks);
+					// console.log(keenDeckEvents);
 					// Send multiple events to several collections
-					module.exports.client.addEvents(keen_deck_events, function(err, res){
+					module.exports.client.addEvents(keenDeckEvents, function(err, res){
 					if (err) {
 						console.log("error", err);
 						// there was an error!
