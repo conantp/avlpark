@@ -9,7 +9,7 @@ module.exports = {
 	dataFeedUrl: "https://s3.amazonaws.com/asheville-parking-decks/spaces.json",
 	activeSpacesData: false,
 	io: false,
-	monitorCheckSpaceData: function(io){
+	monitorCheckSpaceData(io){
 		module.exports.io = io;
 
 		module.exports.client  = new Keen({
@@ -21,10 +21,10 @@ module.exports = {
 			// requestType: "jsonp"	   // String (optional: jsonp, xhr, beacon)
 		});
 
-		var interval = setInterval(module.exports.check_space_data, 60 * 1000);
+		var interval = setInterval(module.exports.checkSpaceData, 60 * 1000);
 	},
 
-	check_space_data: function(){
+	checkSpaceData: function(){
 		console.log("Checking for space data");
 		// console.log(module.exports.dataFeedUrl);
 		request({
@@ -70,7 +70,6 @@ module.exports = {
 											};
 
 						keenEventAllDecks[deckName] = deckAvailable;
-						// console.log(keen_deck_event);
 
 						// PRC Disabled
 						if(true){

@@ -68,7 +68,7 @@ io.on("connection", function(socket){
 
 getKeenData.monitorCheckSpaceData(io);
 processKeenData.monitorProcessKeenData(io);
-getKeenData.check_space_data();
+getKeenData.checkSpaceData();
 
 http.listen(app.get("port"), function() {
 	console.log("Node app is running at localhost:" + app.get("port"));
