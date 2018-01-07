@@ -34,11 +34,15 @@ app.get("/", function(request, response) {
     var obj;
     var obj2;
     fs.readFile("public/data/historical_data.json", "utf8", function (err, data) {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       obj = JSON.parse(data);
 
       fs.readFile("public/data/keen_data.json", "utf8", function (err, data) {
-        if (err) throw err;
+        if (err) {
+          throw err;
+        }
         obj2 = JSON.parse(data);
 
         response.render("index", { activeData: obj, keen_data: obj2});
@@ -56,7 +60,7 @@ app.get("/", function(request, response) {
 
 app.get("/data", function(request, response) {
   response.sendFile(__dirname + "/public/data/keen_data.json");
-})
+});
 
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
