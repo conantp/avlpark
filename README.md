@@ -4,7 +4,7 @@ This project was built using Node.js, and uses Keen.io for historical data loggi
 
 The purpose of this project is to provide residents of Asheville, North Carolina, with up to the minute insight on the capacity of the local parking decks for which we have data.
 
-###To Contribute
+###To Contribute 
 
 - Clone the repo to your local machine
 - In the cloned folder, run 'npm install' to install Node Package Manager
