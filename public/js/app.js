@@ -46,7 +46,7 @@ function setDateVars(){
 }
 
 function formatDate(date) {
-	var d = new Date(date),
+	var d = new Date(date);
 	var year = d.getFullYear();
 	var week = d.getWeekNumber();
 	var day = d.getDay();

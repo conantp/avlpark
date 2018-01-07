@@ -31,7 +31,7 @@ Date.prototype.getWeekNumber = function(){
 };
 
 function formatDate(date) {
-	var d = new Date(date),
+	var d = new Date(date);
 	var year = d.getFullYear();
 	var week = d.getWeekNumber();
 	var day = d.getDay();
