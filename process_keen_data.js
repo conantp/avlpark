@@ -20,7 +20,7 @@ module.exports = {
 		fs.stat("public/data/keen_data.json", function(err, stat) {
 			if(err == null) {
 				console.log("File exists");
-			} else if(err.code == "ENOENT") {
+			} else if(err.code === "ENOENT") {
 				module.exports.processKeenData();
 				// fs.writeFile("log.txt", "Some log\n");
 			} else {
@@ -32,7 +32,7 @@ module.exports = {
 			if(err == null) {
 				console.log("Long File exists");
 			} else if(err.code == "ENOENT") {
-				module.exports.process_wider_keen_data();
+				module.exports.processWiderKeenData();
 				// fs.writeFile("log.txt", "Some log\n");
 			} else {
 				console.log("Some other error: ", err.code);
@@ -40,38 +40,38 @@ module.exports = {
 		});
 
 		var interval = setInterval(module.exports.processKeenData, 1 * 60 * 1000);
-		var interval2 = setInterval(module.exports.process_wider_keen_data, 60 * 60 * 1000);
+		var interval2 = setInterval(module.exports.processWiderKeenData, 60 * 60 * 1000);
 	},
 
 
 
-	convert_keen_result_to_data_array(res){
-		var keen_data = {};
+	convertKeenResultToDataArray(res){
+		var keenData = {};
 
 		for(var key in res.result){
 			var row = res.result[key];
 			var time = row.timeframe.start;
-			
-			for(var val_key in row.value){
-				var value_row = row.value[val_key];
-				var keenDeckName = value_row.deck;
 
-				var keenDeckAvailable = value_row.result;
+			for(var valKey in row.value){
+				var valueRow = row.value[valKey];
+				var keenDeckName = valueRow.deck;
+
+				var keenDeckAvailable = valueRow.result;
 
 				if(keenDeckAvailable === null){
 					continue;
 				}
 
-				if(typeof keen_data[keenDeckName] == "undefined"){
-					keen_data[keenDeckName] = {};
+				if(typeof keenData[keenDeckName] == "undefined"){
+					keenData[keenDeckName] = {};
 				}
-				keen_data[keenDeckName][time] = keenDeckAvailable;
+				keenData[keenDeckName][time] = keenDeckAvailable;
 			}
 		}
-		return keen_data;
+		return keenData;
 	},
 
-	write_keen_data_to_file(data, filename){
+	writeKeenDataToFile(data, filename){
 		fs.writeFile(filename, JSON.stringify(data, null, 4), function(err) {
 			if(err) {
 				console.log(err);
@@ -104,10 +104,9 @@ module.exports = {
 				else {
 					if(JSON.stringify(res) != JSON.stringify(module.exports.activeKeenData) ){
 						module.exports.activeKeenData = res;
-					  
-						var keen_data = module.exports.convert_keen_result_to_data_array(res);
+						var keenData = module.exports.convertKeenResultToDataArray(res);
 
-						module.exports.write_keen_data_to_file(keen_data, "public/data/keen_data.json");
+						module.exports.writeKeenDataToFile(keenData, "public/data/keen_data.json");
 
 					}
 					else{
@@ -118,7 +117,7 @@ module.exports = {
 		});
 	},
 
-	process_wider_keen_data(){
+	processWiderKeenData(){
 		console.log("Checking Keen Data (WIDER)");
 		Keen.ready(function(){
 			var query = new Keen.Query("average", 
@@ -140,9 +139,9 @@ module.exports = {
 					if(JSON.stringify(res) != JSON.stringify(module.exports.activeKeenData) ){
 						module.exports.activeKeenData = res;
 
-						var keen_data = module.exports.convert_keen_result_to_data_array(res);
+						var keen_data = module.exports.convertKeenResultToDataArray(res);
 
-						module.exports.write_keen_data_to_file(keen_data, "public/data/keen_data_long.json");
+						module.exports.writeKeenDataToFile(keen_data, "public/data/keen_data_long.json");
 					}
 					else{
 						console.log("No Keen Data Update");
