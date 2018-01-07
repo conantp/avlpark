@@ -6,18 +6,18 @@
 	// End Segment Analytics
 
 
-	if(typeof activeData === typeof undefined){
-		activeData = {};
-	}
+if(! activeData){
+	activeData = {};
+}
 
-  var processedData = {};
+var processedData = {};
 
-  var currentDate = new Date();
-  var currentMonth = false;
-  var currentDay = false;
-  var currentYear = false;
-  var currentWeek = false;
-  var monthDataByDeck = {};
+var currentDate = new Date();
+var currentMonth = false;
+var currentDay = false;
+var currentYear = false;
+var currentWeek = false;
+var monthDataByDeck = {};
 var myLineChart = [];
 
 var deckRealtimeGraphs = {};
@@ -31,10 +31,10 @@ var deckCapacity = {
 
 
 Date.prototype.getWeekNumber = function(){
-    var d = new Date(+this);
-    d.setHours(0,0,0);
-    d.setDate(d.getDate()+4-(d.getDay()||7));
-    return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
+	var d = new Date(+this);
+	d.setHours(0,0,0);
+	d.setDate(d.getDate()+4-(d.getDay()||7));
+	return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
 };
 
 function setDateVars(){
@@ -55,71 +55,66 @@ function formatDate(date) {
 }
 
 
-function getKeenData(){
-	// Keen data passed into template
-	renderData();
-	renderKeenData();
-}
 
 function renderKeenData(){
 
 	var options3 = {
 
-	    ///Boolean - Whether grid lines are shown across the chart
-	    scaleShowGridLines : true,
+		///Boolean - Whether grid lines are shown across the chart
+		scaleShowGridLines : true,
 
-	    //String - Colour of the grid lines
-	    scaleGridLineColor : "rgba(255,255,255,0.2)",
+		//String - Colour of the grid lines
+		scaleGridLineColor : "rgba(255,255,255,0.2)",
 
-	    //Number - Width of the grid lines
-	    scaleGridLineWidth : 1,
+		//Number - Width of the grid lines
+		scaleGridLineWidth : 1,
 
-	    //Boolean - Whether to show horizontal lines (except X axis)
-	    scaleShowHorizontalLines: true,
+		//Boolean - Whether to show horizontal lines (except X axis)
+		scaleShowHorizontalLines: true,
 
-	    //Boolean - Whether to show vertical lines (except Y axis)
-	    scaleShowVerticalLines: false,
+		//Boolean - Whether to show vertical lines (except Y axis)
+		scaleShowVerticalLines: false,
 
-	    //Boolean - Whether the line is curved between points
-	    bezierCurve : true,
+		//Boolean - Whether the line is curved between points
+		bezierCurve : true,
 
-	    //Number - Tension of the bezier curve between points
-	    bezierCurveTension : 0.4,
+		//Number - Tension of the bezier curve between points
+		bezierCurveTension : 0.4,
 
-	    //Boolean - Whether to show a dot for each point
-	    pointDot : true,
+		//Boolean - Whether to show a dot for each point
+		pointDot : true,
 
-	    //Number - Radius of each point dot in pixels
-	    pointDotRadius : 4,
+		//Number - Radius of each point dot in pixels
+		pointDotRadius : 4,
 
-	    //Number - Pixel width of point dot stroke
-	    pointDotStrokeWidth : 1,
+		//Number - Pixel width of point dot stroke
+		pointDotStrokeWidth : 1,
 
-	    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-	    pointHitDetectionRadius : 20,
+		//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+		pointHitDetectionRadius : 20,
 
-	    //Boolean - Whether to show a stroke for datasets
-	    datasetStroke : true,
+		//Boolean - Whether to show a stroke for datasets
+		datasetStroke : true,
 
-	    //Number - Pixel width of dataset stroke
-	    datasetStrokeWidth : 3,
+		//Number - Pixel width of dataset stroke
+		datasetStrokeWidth : 3,
 
-	    //Boolean - Whether to fill the dataset with a colour
-	    datasetFill : true,
+		//Boolean - Whether to fill the dataset with a colour
+		datasetFill : true,
 
-	    //String - A legend template
-	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+		//String - A legend template
+		legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 
-	    ,    
+		,	
 
-	    responsive: true,
-	        maintainAspectRatio: true,
+		responsive: true,
+			maintainAspectRatio: true,
 
-	    scaleStartValue: 0,
-	    scaleSteps: 5,
-	    scaleStepWidth: 30,
+		scaleStartValue: 0,
+		scaleSteps: 5,
+		scaleStepWidth: 30,
 
-	    scaleOverride: true,
+		scaleOverride: true,
 
 	};
 
@@ -128,17 +123,17 @@ function renderKeenData(){
 		for(var k in keen_data[deck]) keys.push(k.substr(11, 5));
 
 		temp_data_3 = {
-		    labels: keys,
-		    datasets: [
-		        {
-		            label: "My First dataset",
-		            fillColor: "rgba(120, 230, 120, 0.5)",
-		            strokeColor: "rgba(100, 255, 100, 1.0)",
-		            highlightFill: "rgba(255,255,255,0.7)",
-		            highlightStroke:  "rgba(255,255,255,1)",
-		            data: keen_data[deck]
-		        }
-		    ]
+			labels: keys,
+			datasets: [
+				{
+					label: "My First dataset",
+					fillColor: "rgba(120, 230, 120, 0.5)",
+					strokeColor: "rgba(100, 255, 100, 1.0)",
+					highlightFill: "rgba(255,255,255,0.7)",
+					highlightStroke:  "rgba(255,255,255,1)",
+					data: keen_data[deck]
+				}
+			]
 		};
 		chart_data3[deck] = temp_data_3;
 
@@ -272,121 +267,121 @@ function renderData(){
 
   	var options = {
 
-	    ///Boolean - Whether grid lines are shown across the chart
-	    scaleShowGridLines : true,
+		///Boolean - Whether grid lines are shown across the chart
+		scaleShowGridLines : true,
 
-	    //String - Colour of the grid lines
-	    scaleGridLineColor : "rgba(255,255,255,0.2)",
+		//String - Colour of the grid lines
+		scaleGridLineColor : "rgba(255,255,255,0.2)",
 
-	    //Number - Width of the grid lines
-	    scaleGridLineWidth : 1,
+		//Number - Width of the grid lines
+		scaleGridLineWidth : 1,
 
-	    //Boolean - Whether to show horizontal lines (except X axis)
-	    scaleShowHorizontalLines: true,
+		//Boolean - Whether to show horizontal lines (except X axis)
+		scaleShowHorizontalLines: true,
 
-	    //Boolean - Whether to show vertical lines (except Y axis)
-	    scaleShowVerticalLines: false,
+		//Boolean - Whether to show vertical lines (except Y axis)
+		scaleShowVerticalLines: false,
 
-	    //Boolean - Whether the line is curved between points
-	    bezierCurve : true,
+		//Boolean - Whether the line is curved between points
+		bezierCurve : true,
 
-	    //Number - Tension of the bezier curve between points
-	    bezierCurveTension : 0.4,
+		//Number - Tension of the bezier curve between points
+		bezierCurveTension : 0.4,
 
-	    //Boolean - Whether to show a dot for each point
-	    pointDot : true,
+		//Boolean - Whether to show a dot for each point
+		pointDot : true,
 
-	    //Number - Radius of each point dot in pixels
-	    pointDotRadius : 4,
+		//Number - Radius of each point dot in pixels
+		pointDotRadius : 4,
 
-	    //Number - Pixel width of point dot stroke
-	    pointDotStrokeWidth : 1,
+		//Number - Pixel width of point dot stroke
+		pointDotStrokeWidth : 1,
 
-	    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-	    pointHitDetectionRadius : 20,
+		//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+		pointHitDetectionRadius : 20,
 
-	    //Boolean - Whether to show a stroke for datasets
-	    datasetStroke : true,
+		//Boolean - Whether to show a stroke for datasets
+		datasetStroke : true,
 
-	    //Number - Pixel width of dataset stroke
-	    datasetStrokeWidth : 3,
+		//Number - Pixel width of dataset stroke
+		datasetStrokeWidth : 3,
 
-	    //Boolean - Whether to fill the dataset with a colour
-	    datasetFill : true,
+		//Boolean - Whether to fill the dataset with a colour
+		datasetFill : true,
 
-	    //String - A legend template
-	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+		//String - A legend template
+		legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 
-	    ,    
+		,	
 
-	    responsive: true,
-	        maintainAspectRatio: true,
+		responsive: true,
+			maintainAspectRatio: true,
 
-    scaleStartValue: 0,
-    scaleSteps: 2,
-    scaleStepWidth: Math.ceil(40 / 2),
+	scaleStartValue: 0,
+	scaleSteps: 2,
+	scaleStepWidth: Math.ceil(40 / 2),
 
-    scaleOverride: true,
+	scaleOverride: true,
 
 	};
 
 	var options2 = {
 
-	    ///Boolean - Whether grid lines are shown across the chart
-	    scaleShowGridLines : true,
+		///Boolean - Whether grid lines are shown across the chart
+		scaleShowGridLines : true,
 
-	    //String - Colour of the grid lines
-	    scaleGridLineColor : "rgba(255,255,255,0.2)",
+		//String - Colour of the grid lines
+		scaleGridLineColor : "rgba(255,255,255,0.2)",
 
-	    //Number - Width of the grid lines
-	    scaleGridLineWidth : 1,
+		//Number - Width of the grid lines
+		scaleGridLineWidth : 1,
 
-	    //Boolean - Whether to show horizontal lines (except X axis)
-	    scaleShowHorizontalLines: true,
+		//Boolean - Whether to show horizontal lines (except X axis)
+		scaleShowHorizontalLines: true,
 
-	    //Boolean - Whether to show vertical lines (except Y axis)
-	    scaleShowVerticalLines: false,
+		//Boolean - Whether to show vertical lines (except Y axis)
+		scaleShowVerticalLines: false,
 
-	    //Boolean - Whether the line is curved between points
-	    bezierCurve : true,
+		//Boolean - Whether the line is curved between points
+		bezierCurve : true,
 
-	    //Number - Tension of the bezier curve between points
-	    bezierCurveTension : 0.4,
+		//Number - Tension of the bezier curve between points
+		bezierCurveTension : 0.4,
 
-	    //Boolean - Whether to show a dot for each point
-	    pointDot : true,
+		//Boolean - Whether to show a dot for each point
+		pointDot : true,
 
-	    //Number - Radius of each point dot in pixels
-	    pointDotRadius : 4,
+		//Number - Radius of each point dot in pixels
+		pointDotRadius : 4,
 
-	    //Number - Pixel width of point dot stroke
-	    pointDotStrokeWidth : 1,
+		//Number - Pixel width of point dot stroke
+		pointDotStrokeWidth : 1,
 
-	    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-	    pointHitDetectionRadius : 20,
+		//Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+		pointHitDetectionRadius : 20,
 
-	    //Boolean - Whether to show a stroke for datasets
-	    datasetStroke : true,
+		//Boolean - Whether to show a stroke for datasets
+		datasetStroke : true,
 
-	    //Number - Pixel width of dataset stroke
-	    datasetStrokeWidth : 3,
+		//Number - Pixel width of dataset stroke
+		datasetStrokeWidth : 3,
 
-	    //Boolean - Whether to fill the dataset with a colour
-	    datasetFill : true,
+		//Boolean - Whether to fill the dataset with a colour
+		datasetFill : true,
 
-	    //String - A legend template
-	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+		//String - A legend template
+		legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 
-	    ,    
+		,	
 
-	    responsive: true,
-	        maintainAspectRatio: true,
+		responsive: true,
+			maintainAspectRatio: true,
 
-	    scaleStartValue: 0,
-	    scaleSteps: 4,
-	    scaleStepWidth: Math.ceil(100 / 4),
+		scaleStartValue: 0,
+		scaleSteps: 4,
+		scaleStepWidth: Math.ceil(100 / 4),
 
-	    scaleOverride: true,
+		scaleOverride: true,
 
 	};
 
@@ -401,31 +396,31 @@ function renderData(){
 	for(deck in activeData){
 
 		temp_data = {
-		    labels: ["Su.", "Mo.", "Tu.", "We.", "Th.", "Fr.", "Sa."],
-		    datasets: [
-		        {
-		            label: "My First dataset",
-		            fillColor: "rgba(255, 255, 255, 0.5)",
-		            strokeColor: "rgba(255, 255, 255, 1.0)",
-		            highlightFill: "rgba(255,255,255,0.7)",
-		            highlightStroke:  "rgba(255,255,255,1)",
-		            data: activeData[deck]['year_data']['2015']
-		        }
-		    ]
+			labels: ["Su.", "Mo.", "Tu.", "We.", "Th.", "Fr.", "Sa."],
+			datasets: [
+				{
+					label: "My First dataset",
+					fillColor: "rgba(255, 255, 255, 0.5)",
+					strokeColor: "rgba(255, 255, 255, 1.0)",
+					highlightFill: "rgba(255,255,255,0.7)",
+					highlightStroke:  "rgba(255,255,255,1)",
+					data: activeData[deck]['year_data']['2015']
+				}
+			]
 		};
 
 		temp_data_2 = {
-		    labels: ["14-Jan", "14-Feb", "14-Mar", "14-Apr", "14-May", "14-Jun", "14-Jul", "14-Aug", "14-Sep", "14-Oct", "14-Nov", "14-Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-		    datasets: [
-		        {
-		            label: "My First dataset",
-		            fillColor: "rgba(120, 230, 120, 0.5)",
-		            strokeColor: "rgba(100, 255, 100, 1.0)",
-		            highlightFill: "rgba(255,255,255,0.7)",
-		            highlightStroke:  "rgba(255,255,255,1)",
-		            data: monthDataByDeck[deck]
-		        }
-		    ]
+			labels: ["14-Jan", "14-Feb", "14-Mar", "14-Apr", "14-May", "14-Jun", "14-Jul", "14-Aug", "14-Sep", "14-Oct", "14-Nov", "14-Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+			datasets: [
+				{
+					label: "My First dataset",
+					fillColor: "rgba(120, 230, 120, 0.5)",
+					strokeColor: "rgba(100, 255, 100, 1.0)",
+					highlightFill: "rgba(255,255,255,0.7)",
+					highlightStroke:  "rgba(255,255,255,1)",
+					data: monthDataByDeck[deck]
+				}
+			]
 		};
 
 		chart_data.push(temp_data);
@@ -466,9 +461,15 @@ function renderData(){
 		$(this).find('.chart-container').slideToggle();
 
 	});
-  }
+}
 
 
+
+function getKeenData(){
+	// Keen data passed into template
+	renderData();
+	renderKeenData();
+}
 
 
 
