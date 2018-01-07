@@ -163,7 +163,7 @@ function checkForNewData(data){
 			chart_data3[deck_key].labels = keys;
 			chart_data3[deck_key].datasets[0].data = keen_data[deck_key];
 
-	  		new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
+			new_score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
 
 			// $('li.parking-deck[data-deck-key="'+deck_key+'"]').find('.score').html(new_score);
 
@@ -189,83 +189,83 @@ function checkForNewData(data){
 }
 
 function renderData(){
-  	$(".current-date").html(dateFormat(currentDate, "dddd, mmmm dS") );
+	$(".current-date").html(dateFormat(currentDate, "dddd, mmmm dS") );
 
 	// $("#parking-deck-list").before("<div id='chart3' width=\"100%\" height=\"800\" style='height: 800px'></div>");
 
-  	for (deck in activeData){
-  		row = activeData[deck];
+	for (deck in activeData){
+		row = activeData[deck];
 
-  		score = 10 - parseFloat(row['2015-'+currentDay].replace("%", "")) / 10;
-  		score = score.toFixed(1);
+		score = 10 - parseFloat(row['2015-'+currentDay].replace("%", "")) / 10;
+		score = score.toFixed(1);
 
-  		deck_key = deck;
-  		if(deck_key == "Biltmore Ave (Aloft)"){
-  			deck_key = "Biltmore Ave";
-  			deck = deck_key;
-  		}
+		deck_key = deck;
+		if(deck_key == "Biltmore Ave (Aloft)"){
+			deck_key = "Biltmore Ave";
+			deck = deck_key;
+		}
 
-  		if(deck_key == "Rankin Street"){
-  			deck_key = "Rankin Ave";
-  		}
+		if(deck_key == "Rankin Street"){
+			deck_key = "Rankin Ave";
+		}
 
-  		console.log(deck_key);
-  		// NEW SCORE
-  		score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
-
-
-  		deck_class = 'deck-green';
-  		if(score < 1){
-  			deck_class = 'deck-red';
-  		}
-  		else if(score < 10){
-  			deck_class = 'deck-orange';
-  		}
+		console.log(deck_key);
+		// NEW SCORE
+		score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
 
 
-  		html = "";
+		deck_class = 'deck-green';
+		if(score < 1){
+			deck_class = 'deck-red';
+		}
+		else if(score < 10){
+			deck_class = 'deck-orange';
+		}
 
 
-  		html += "<li class='parking-deck "+deck_class+" col-sm-3' data-deck-key='"+ deck_key + "'>" ;
-	  		html += "<div class='parking-deck-inner'>";
-		  		html += "<h2 class='text-center display-block'>" + deck + "</h2>";
-		  		html += "<div class='score-container text-center'><div class='score odometer'>0</div><b>&nbsp;&nbsp;spaces available</b></div>";
-		  		html += "<div class='graph-container'>";
-			  		html += "<div class='chart-container'>";
-				  		html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
-				  		html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
-				  		html += "<small class='text-center display-block'>Graph of the past hour</small>"
-				  		html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
-			  		html += "</div>";
-			  		html += "<div class='parking-deck-footer'>";
+		html = "";
+
+
+		html += "<li class='parking-deck "+deck_class+" col-sm-3' data-deck-key='"+ deck_key + "'>" ;
+			html += "<div class='parking-deck-inner'>";
+				html += "<h2 class='text-center display-block'>" + deck + "</h2>";
+				html += "<div class='score-container text-center'><div class='score odometer'>0</div><b>&nbsp;&nbsp;spaces available</b></div>";
+				html += "<div class='graph-container'>";
+					html += "<div class='chart-container'>";
+						html += "<canvas class='chart' width=\"100%\" height=\"200\"></canvas>";
+						html += "<canvas class='chart2' width=\"100%\" height=\"200\"></canvas>";
+						html += "<small class='text-center display-block'>Graph of the past hour</small>"
+						html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
+					html += "</div>";
+					html += "<div class='parking-deck-footer'>";
 						html += "<small class='text-center display-block'>" + "Max use in previous years</small>";			  		
-				  		html += "<ul class='year-list'>";
-				  			i = 0;
-				  			for(year in activeData[deck]){
-				  				if(i++ > 3){
-				  					break;
-				  				}
-				  				if(typeof activeData[deck][year] == 'string'){
-					  				percent = activeData[deck][year];
-					  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
-					  				if(percent > 0){
-						  				html += "<li>";
-						  					html += "<p><b>" + year + "</b> : " + percent + "%</p>";
-						  				html += "</li>";
-						  			}
-					  			}
-				  			}
+						html += "<ul class='year-list'>";
+							i = 0;
+							for(year in activeData[deck]){
+								if(i++ > 3){
+									break;
+								}
+								if(typeof activeData[deck][year] == 'string'){
+									percent = activeData[deck][year];
+									percent = parseFloat(percent.replace("%", "")).toFixed(0);
+									if(percent > 0){
+										html += "<li>";
+											html += "<p><b>" + year + "</b> : " + percent + "%</p>";
+										html += "</li>";
+									}
+								}
+							}
 
-				  		html += "</ul>";
-				  	html +="</div>";			  		
-		  		html += "</div>";
-	  		html += "</div>";	  		
-  		html += "</li>";
-  		$("#parking-deck-list").append(html);
-  	}
+						html += "</ul>";
+					html +="</div>";			  		
+				html += "</div>";
+			html += "</div>";	  		
+		html += "</li>";
+		$("#parking-deck-list").append(html);
+	}
 
 
-  	var options = {
+	var options = {
 
 		///Boolean - Whether grid lines are shown across the chart
 		scaleShowGridLines : true,
@@ -430,7 +430,7 @@ function renderData(){
 
 
 
-  	$("#parking-deck-list").slideDown('fast');
+	$("#parking-deck-list").slideDown('fast');
 
 
 	i = 0;
@@ -440,7 +440,7 @@ function renderData(){
 
 		// Get the context of the canvas element we want to select
 
-	  	// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chart_data[i++], options) );
+		// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Bar(chart_data[i++], options) );
 	
 	});
 
@@ -449,7 +449,7 @@ function renderData(){
 
 		// Get the context of the canvas element we want to select
 
-	  	// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data2[i++], options2) );
+		// myLineChart.push( new Chart($(this)[0].getContext("2d") ).Line(chart_data2[i++], options2) );
 	
 	});
 

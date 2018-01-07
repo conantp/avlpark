@@ -103,7 +103,7 @@ module.exports = {
 				}
 				else {
 					if(JSON.stringify(res) != JSON.stringify(module.exports.active_keen_data) ){
-					  	module.exports.active_keen_data = res;
+						module.exports.active_keen_data = res;
 					  
 						var keen_data = module.exports.convert_keen_result_to_data_array(res);
 
