@@ -195,7 +195,7 @@ function renderData(){
 	for (deck in activeData){
 		row = activeData[deck];
 
-		score = 10 - parseFloat(row['2015-'+currentDay].replace("%", "")) / 10;
+		score = 10 - parseFloat(row["2015-"+currentDay].replace("%", "")) / 10;
 		score = score.toFixed(1);
 
 		deck_key = deck;
@@ -213,12 +213,12 @@ function renderData(){
 		score = keen_data[deck_key][Object.keys(keen_data[deck_key])[Object.keys(keen_data[deck_key]).length - 1]];
 
 
-		deck_class = 'deck-green';
+		deck_class = "deck-green";
 		if(score < 1){
-			deck_class = 'deck-red';
+			deck_class = "deck-red";
 		}
 		else if(score < 10){
-			deck_class = 'deck-orange';
+			deck_class = "deck-orange";
 		}
 
 
@@ -429,7 +429,7 @@ function renderData(){
 
 
 
-	$("#parking-deck-list").slideDown('fast');
+	$("#parking-deck-list").slideDown("fast");
 
 
 	i = 0;
@@ -457,11 +457,10 @@ function renderData(){
 	// $(".parking-deck").find('.chart-container').slideToggle();
 
 	$(".parking-deck").click(function(){
-		$(this).find('.chart-container').slideToggle();
+		$(this).find(".chart-container").slideToggle();
 
 	});
 }
-
 
 
 function getKeenData(){
@@ -479,10 +478,9 @@ function init() {
 	delete activeData.monthDataByDeck;
 	setDateVars();
 	getKeenData();
-
 }
 
-  init();
+init();
 
 var socket = io.connect();
 
@@ -491,22 +489,19 @@ function updateScoreData(data){
 	for(var key in data.decks){
 		row = data.decks[key];
 		total_available += parseInt(row.available);
-		$('li.parking-deck[data-deck-key="'+row.name+'"]').find('.score').html(parseInt(row.available) );
+		$('li.parking-deck[data-deck-key="'+row.name+'"]').find(".score").html(parseInt(row.available) );
 		// console.log(row);
 	}
-	$('.total-available b').html(total_available);
+	$(".total-available b").html(total_available);
 }
 
-socket.on('spaces-update', function(data){
+socket.on("spaces-update", function(data){
 	console.log("Message received: ", data);
 	updateScoreData(data);
 });
 
-socket.on('keen-update', function(data){
-
-  console.log("Keen received: ", data);
-		
+socket.on("keen-update", function(data){
+	console.log("Keen received: ", data);
 	checkForNewData(data);
-
 });
 
