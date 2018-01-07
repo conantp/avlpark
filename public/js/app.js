@@ -50,7 +50,7 @@ function formatDate(date) {
 	var week = d.getWeekNumber();
 	var day = d.getDay();
 
-	return [year, week, day].join('-');
+	return [year, week, day].join("-");
 }
 
 
@@ -166,10 +166,7 @@ function checkForNewData(data){
 
 			// $('li.parking-deck[data-deck-key="'+deck_key+'"]').find('.score').html(new_score);
 
-
 			var last_key = keys[keys.length - 1];
-
-			console.log('labels', last_label, last_key);	
 
 			if(last_label == last_key){
 				deckRealtimeGraphs[deck_key].datasets[0].points[deckRealtimeGraphs[deck_key].datasets[0].points.length - 1].value = new_score;
