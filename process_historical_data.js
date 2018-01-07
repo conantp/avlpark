@@ -16,7 +16,7 @@ var monthDataByDeck = {};
 
 
 function setDateVars(){
-    var d = new Date();
+	var d = new Date();
 	currentDay = d.getDay();
 	currentWeek = d.getWeekNumber();
 	currentYear = d.getFullYear();
@@ -24,10 +24,10 @@ function setDateVars(){
 
 
 Date.prototype.getWeekNumber = function(){
-    var d = new Date(+this);
-    d.setHours(0,0,0);
-    d.setDate(d.getDate()+4-(d.getDay()||7));
-    return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
+	var d = new Date(+this);
+	d.setHours(0,0,0);
+	d.setDate(d.getDate()+4-(d.getDay()||7));
+	return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
 };
 
 function formatDate(date) {
@@ -61,68 +61,68 @@ function showInfo(data2, tabletop) {
 
   function write_data_to_file(outputFilename, data){
 	fs.writeFile(outputFilename, JSON.stringify(data, null, 4), function(err) {
-	    if(err) {
-	      console.log(err);
-	    } else {
-	      console.log("JSON saved to " + outputFilename);
-	    }
+		if(err) {
+		  console.log(err);
+		} else {
+		  console.log("JSON saved to " + outputFilename);
+		}
 	}); 
   }
 
   function buildActiveData(){
-    year = 2012;
+	year = 2012;
 
-    for(column in processedData["2015-1-0"]){
-      if( column == "Date" || 
-        column == "Day" || 
-        column == "Week" || 
-        column == "Month" || 
-        column == "Year"){
-        continue;
-      }
+	for(column in processedData["2015-1-0"]){
+	  if( column == "Date" || 
+		column == "Day" || 
+		column == "Week" || 
+		column == "Month" || 
+		column == "Year"){
+		continue;
+	  }
 
-      activeData[column] = {};
-    }
+	  activeData[column] = {};
+	}
 
-      while(year <= 2015){
-        search_str = year + "-" + currentWeek + "-" + currentDay;
-        console.log(search_str);
+	  while(year <= 2015){
+		search_str = year + "-" + currentWeek + "-" + currentDay;
+		console.log(search_str);
 
-        for(column in processedData[search_str]){
-          if( column == "Date" || 
-            column == "Day" || 
-            column == "Week" || 
-            column == "Month" || 
-            column == "Year"){
-          continue;
-        }
-        // if(processedData[search_str][column] > 0){
-            activeData[column][year] = processedData[search_str][column];
-        // }
-        }
+		for(column in processedData[search_str]){
+		  if( column == "Date" || 
+			column == "Day" || 
+			column == "Week" || 
+			column == "Month" || 
+			column == "Year"){
+		  continue;
+		}
+		// if(processedData[search_str][column] > 0){
+			activeData[column][year] = processedData[search_str][column];
+		// }
+		}
 
-        // activeData[year] = processedData[search_str];
+		// activeData[year] = processedData[search_str];
 
-        year++;
-      }
-      console.log(activeData);
-    }
+		year++;
+	  }
+	  console.log(activeData);
+	}
 
 
   function buildMonthAverage(){
 	for(index in data){
 		row = data[index];
 
-	    var d = new Date(row.Date);
+		var d = new Date(row.Date);
 
-	    row_mo = d.getMonth();
-	    row_yr = d.getFullYear();
-	    row_dy = d.getDate();
+		row_mo = d.getMonth();
+		row_yr = d.getFullYear();
+		row_dy = d.getDate();
 
 
-	    key = row_yr + "-" + row_mo;
+		key = row_yr + "-" + row_mo;
 
-	    for(deck in row){
+		for(deck in row){
 				if(	deck == "Date" || 
 					deck == "Day" || 
 					deck == "Week" || 
@@ -259,12 +259,12 @@ var do_data_process = function(){
 	console.log("Processing sheet data");
 	setDateVars();
 
-      tabletop.init( { key: public_spreadsheet_url,
-                     callback: showInfo,
-                     simpleSheet: false } );
+	  tabletop.init( { key: public_spreadsheet_url,
+					 callback: showInfo,
+					 simpleSheet: false } );
 
 
-     
+	 
 
 };
 

@@ -20,39 +20,39 @@ app.get("/about", function(request, response) {
 });
 
 app.get("/stats", function(request, response) {
-    var obj;
-    fs.readFile("public/data/keen_data_long.json", "utf8", function (err, data) {
-      if (err){
-        throw err;
-      } 
-      obj = JSON.parse(data);
-        response.render("stats", { keenData: obj});
-    });
+	var obj;
+	fs.readFile("public/data/keen_data_long.json", "utf8", function (err, data) {
+	  if (err){
+		throw err;
+	  } 
+	  obj = JSON.parse(data);
+		response.render("stats", { keenData: obj});
+	});
 });
 
 app.get("/", function(request, response) {
-    var obj;
-    var obj2;
-    fs.readFile("public/data/historical_data.json", "utf8", function (err, data) {
-      if (err) {
-        throw err;
-      }
-      obj = JSON.parse(data);
+	var obj;
+	var obj2;
+	fs.readFile("public/data/historical_data.json", "utf8", function (err, data) {
+	  if (err) {
+		throw err;
+	  }
+	  obj = JSON.parse(data);
 
-      fs.readFile("public/data/keen_data.json", "utf8", function (err, data) {
-        if (err) {
-          throw err;
-        }
-        obj2 = JSON.parse(data);
+	  fs.readFile("public/data/keen_data.json", "utf8", function (err, data) {
+		if (err) {
+		  throw err;
+		}
+		obj2 = JSON.parse(data);
 
-        response.render("index", { activeData: obj, keen_data: obj2});
+		response.render("index", { activeData: obj, keen_data: obj2});
 
-      });
-
-
+	  });
 
 
-    });
+
+
+	});
 
 
 	// response.sendFile(__dirname + "/public/html/index.html");
@@ -73,13 +73,13 @@ io.on("connection", function(socket){
   io.emit("spaces-update", getKeenData.activeSpacesData);
 
   socket.on("disconnect", function(){
-      console.log("user disconnected");
-    });
+	  console.log("user disconnected");
+	});
 
   // socket.on("spaces-update", function(msg){
-  //       console.log("message" + msg);
+  //	   console.log("message" + msg);
 
-  //     io.emit("chat message", msg);
+  //	 io.emit("chat message", msg);
   //   });
 });
 

@@ -15,10 +15,10 @@ module.exports = {
 		module.exports.client  = new Keen({
 			projectId: "565c7cf3672e6c59de885e59", // String (required always)
 			writeKey: "86e65b316d1ca3a89c290c026a2c4cdee5dd764e836c140e014d7e364b25a1472454f97857cbf3214061a742c0afd4b670fa50b3eb065c9fd0474496805eb92d648fd060729dff23340f353f39b0d825abd3ddfdd2ae82d036e7757f8e80856d3931fa3887723d77968d462f36bae605",   // String (required for sending data)
-			readKey: "0b4ce90e25a8674f4db8a6232c2b50814065d1b9f41ee768c3d427dfd0dd7b1c90535f056acade7a57551360d89dd5f16051bd804d57e57b0ce8b89640cd17f696d15ad098bd098e4d12196b0c5874128a0ce92015a64476e65ae74da94aaaba3f0a678d4337d95bb267ab79575468d9"      // String (required for querying data)
-			// protocol: "https",         // String (optional: https | http | auto)
+			readKey: "0b4ce90e25a8674f4db8a6232c2b50814065d1b9f41ee768c3d427dfd0dd7b1c90535f056acade7a57551360d89dd5f16051bd804d57e57b0ce8b89640cd17f696d15ad098bd098e4d12196b0c5874128a0ce92015a64476e65ae74da94aaaba3f0a678d4337d95bb267ab79575468d9"	  // String (required for querying data)
+			// protocol: "https",		 // String (optional: https | http | auto)
 			// host: "api.keen.io/3.0",   // String (optional)
-			// requestType: "jsonp"       // String (optional: jsonp, xhr, beacon)
+			// requestType: "jsonp"	   // String (optional: jsonp, xhr, beacon)
 		});
 
 		var interval = setInterval(module.exports.check_space_data, 60 * 1000);
@@ -94,7 +94,7 @@ module.exports = {
 						// see sample response below
 					}
 				});
-		    }
+			}
 		});
 	}
 }
