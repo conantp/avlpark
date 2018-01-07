@@ -9,7 +9,7 @@ var processedData = {};
   var currentDay = false;
   var currentYear = false;
   var currentWeek = false;
-  var active_data = {};
+  var activeData = {};
 var processedData = {};
       var month_data = {};
   var monthDataByDeck = {};
@@ -66,8 +66,8 @@ Date.prototype.getWeekNumber = function(){
     buildDayOfWeekAverage();
     buildMonthAverage();
 
-    active_data.monthDataByDeck = monthDataByDeck;
-	write_data_to_file('public/data/historical_data.json', active_data);
+    activeData.monthDataByDeck = monthDataByDeck;
+	write_data_to_file('public/data/historical_data.json', activeData);
   }
 
   function write_data_to_file(outputFilename, data){
@@ -92,7 +92,7 @@ Date.prototype.getWeekNumber = function(){
         continue;
       }
 
-      active_data[column] = {};
+      activeData[column] = {};
     }
 
       while(year <= 2015){
@@ -108,15 +108,15 @@ Date.prototype.getWeekNumber = function(){
           continue;
         }
         // if(processedData[search_str][column] > 0){
-            active_data[column][year] = processedData[search_str][column];
+            activeData[column][year] = processedData[search_str][column];
         // }
         }
 
-        // active_data[year] = processedData[search_str];
+        // activeData[year] = processedData[search_str];
 
         year++;
       }
-      console.log(active_data);
+      console.log(activeData);
     }
 
 
@@ -222,38 +222,38 @@ Date.prototype.getWeekNumber = function(){
 					}
 					value = parseFloat(processedData[search_str][deck].replace("%", "") );
 
-					if(typeof active_data[deck][day] == "undefined"){
-						active_data[deck][day] = 0;
-						active_data[deck][day+"_count"] = 0;
+					if(typeof activeData[deck][day] == "undefined"){
+						activeData[deck][day] = 0;
+						activeData[deck][day+"_count"] = 0;
 					}
 
-		  			active_data[deck][day] += value;
-		  			active_data[deck][day+"_count"]++;
+		  			activeData[deck][day] += value;
+		  			activeData[deck][day+"_count"]++;
 		  		}
 
-		  		// active_data[year] = processedData[search_str];
+		  		// activeData[year] = processedData[search_str];
 
 		  		week++;
 		  	}
 
-	  		for(deck in active_data){
-				value = active_data[deck][day] / active_data[deck][day+"_count"];
+	  		for(deck in activeData){
+				value = activeData[deck][day] / activeData[deck][day+"_count"];
 
 			 	dateString = year+"-"+day;//dateFormat(day, "dddd");
 
-			 	if(typeof active_data[deck]['year_data'] == 'undefined'){
-			 		active_data[deck]['year_data'] = {};
+			 	if(typeof activeData[deck]['year_data'] == 'undefined'){
+			 		activeData[deck]['year_data'] = {};
 			 	}
-			 	if(typeof active_data[deck]['year_data'][year] == 'undefined'){
-			 		active_data[deck]['year_data'][year] = {};
+			 	if(typeof activeData[deck]['year_data'][year] == 'undefined'){
+			 		activeData[deck]['year_data'][year] = {};
 			 	}
 
 			 	if(value > 0){
-					active_data[deck][dateString] = value.toFixed(2) + "%";
-					active_data[deck]['year_data'][year][day] = (100 - value).toFixed(2);
+					activeData[deck][dateString] = value.toFixed(2) + "%";
+					activeData[deck]['year_data'][year][day] = (100 - value).toFixed(2);
 			 	}
-				delete active_data[deck][day];
-				delete active_data[deck][day+"_count"];
+				delete activeData[deck][day];
+				delete activeData[deck][day+"_count"];
 			}
 		  	day++;
 		}

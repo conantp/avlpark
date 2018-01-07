@@ -8,7 +8,7 @@ module.exports = {
 	active_keen_data: false,
 	io: false,
 
-	monitor_process_keen_data: function(io){
+	monitorProcessKeenData: function(io){
 		module.exports.io = io;
 		module.exports.client = new Keen({
 			projectId: "565c7cf3672e6c59de885e59", // String (required always)
@@ -23,7 +23,7 @@ module.exports = {
 		    if(err == null) {
 		        console.log('File exists');
 		    } else if(err.code == 'ENOENT') {
-		    	module.exports.process_keen_data();
+		    	module.exports.processKeenData();
 		        // fs.writeFile('log.txt', 'Some log\n');
 		    } else {
 		        console.log('Some other error: ', err.code);
@@ -41,7 +41,7 @@ module.exports = {
 		    }
 		});
 
-		var interval = setInterval(module.exports.process_keen_data, 1 * 60 * 1000);
+		var interval = setInterval(module.exports.processKeenData, 1 * 60 * 1000);
 		var interval2 = setInterval(module.exports.process_wider_keen_data, 60 * 60 * 1000);
 	},
 
@@ -85,7 +85,7 @@ module.exports = {
 		});
 	},
 
-	process_keen_data: function(){
+	processKeenData: function(){
 		console.log("Checking Keen Data");
 		Keen.ready(function(){
 			var query = new Keen.Query("average", 

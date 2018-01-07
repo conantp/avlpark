@@ -6,8 +6,8 @@
 	// End Segment Analytics
 
 
-	if typeof active_data === typeof undefined{
-		active_data = {};
+	if typeof activeData === typeof undefined{
+		activeData = {};
 	}
 
   var processedData = {};
@@ -198,8 +198,8 @@ function renderData(){
 
 	// $("#parking-deck-list").before("<div id='chart3' width=\"100%\" height=\"800\" style='height: 800px'></div>");
 
-  	for (deck in active_data){
-  		row = active_data[deck];
+  	for (deck in activeData){
+  		row = activeData[deck];
 
   		score = 10 - parseFloat(row['2015-'+currentDay].replace("%", "")) / 10;
   		score = score.toFixed(1);
@@ -246,12 +246,12 @@ function renderData(){
 						html += "<small class='text-center display-block'>" + "Max use in previous years</small>";			  		
 				  		html += "<ul class='year-list'>";
 				  			i = 0;
-				  			for(year in active_data[deck]){
+				  			for(year in activeData[deck]){
 				  				if(i++ > 3){
 				  					break;
 				  				}
-				  				if(typeof active_data[deck][year] == 'string'){
-					  				percent = active_data[deck][year];
+				  				if(typeof activeData[deck][year] == 'string'){
+					  				percent = activeData[deck][year];
 					  				percent = parseFloat(percent.replace("%", "")).toFixed(0);
 					  				if(percent > 0){
 						  				html += "<li>";
@@ -395,10 +395,10 @@ function renderData(){
 	chart_data3 = {};
 
 
-	// for(year in active_data["Civic Center"]['year_data']){
-	// 	chart_data.push(active_data["Civic Center"]['year_data'][year]);
+	// for(year in activeData["Civic Center"]['year_data']){
+	// 	chart_data.push(activeData["Civic Center"]['year_data'][year]);
 	// }
-	for(deck in active_data){
+	for(deck in activeData){
 
 		temp_data = {
 		    labels: ["Su.", "Mo.", "Tu.", "We.", "Th.", "Fr.", "Sa."],
@@ -409,7 +409,7 @@ function renderData(){
 		            strokeColor: "rgba(255, 255, 255, 1.0)",
 		            highlightFill: "rgba(255,255,255,0.7)",
 		            highlightStroke:  "rgba(255,255,255,1)",
-		            data: active_data[deck]['year_data']['2015']
+		            data: activeData[deck]['year_data']['2015']
 		        }
 		    ]
 		};
@@ -475,8 +475,8 @@ function renderData(){
 // window.onload = function() { init() };
 
 function init() {
-	monthDataByDeck = active_data.monthDataByDeck;
-	delete active_data.monthDataByDeck;
+	monthDataByDeck = activeData.monthDataByDeck;
+	delete activeData.monthDataByDeck;
 	setDateVars();
 	getKeenData();
 
