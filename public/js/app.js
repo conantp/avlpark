@@ -6,7 +6,7 @@
 	// End Segment Analytics
 
 
-	if typeof activeData === typeof undefined{
+	if(typeof activeData === typeof undefined){
 		activeData = {};
 	}
 
