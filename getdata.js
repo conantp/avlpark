@@ -32,26 +32,25 @@ module.exports = {
 				    json: true
 				}, function (error, response, body) {
 
-				    if (!error && response.statusCode === 200) {
-				        var keen_ts = new Date().toISOString();
+	    			if (!error && response.statusCode === 200) {
+						var keenTs = new Date().toISOString();
 
-				         if(JSON.stringify(body) != JSON.stringify(module.exports.active_spaces_data)){
-				              module.exports.active_spaces_data = body;
-				              module.exports.io.emit('spaces-update', module.exports.active_spaces_data);
-				              console.log("Sent spaces update to clients via socket");
-				          }
-				          else{
-				            console.log("No spaces update");
-				            return;
-				          }
-
+						if(JSON.stringify(body) != JSON.stringify(module.exports.active_spaces_data)){
+							module.exports.active_spaces_data = body;
+							module.exports.io.emit("spaces-update", module.exports.active_spaces_data);
+							console.log("Sent spaces update to clients via socket");
+						}
+						else{
+							console.log("No spaces update");
+							return;
+						}
 
 				    	var keen_deck_events = {'deck_status': [], 'deck_status_all' : []};
 
 				        // console.log(body) // Print the json response
 
 				        var keen_event_all_decks = {
-				        								keen: { timestamp: keen_ts}
+				        								keen: { timestamp: keenTs}
 													};
 
 				        for(key in body.decks){
@@ -64,7 +63,7 @@ module.exports = {
 				        							deck: deck_name, 
 				        							available: deck_available,
 				        							keen: { 
-				        									timestamp: keen_ts,
+				        									timestamp: keenTs,
 				        									location: {
 				        										coordinates: [deck_data.coords[1], deck_data.coords[0]]
 				        									} 

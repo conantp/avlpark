@@ -12,12 +12,12 @@ var app = express()
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 
-app.set('port', (process.env.PORT || 5000))
-app.use(express.static(__dirname + '/public'))
-app.use(express.static(__dirname + '/node_modules'))
+app.set('port', (process.env.PORT || 5000));
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/node_modules'));
 
-app.get('/about', function(request, response) {
-  response.render('about');
+app.get("/about", function(request, response) {
+  response.render("about");
 });
 
 app.get('/stats', function(request, response) {
