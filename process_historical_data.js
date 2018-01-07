@@ -1,8 +1,6 @@
 var fs = require("fs");
 var tabletop = require("tabletop");
-
-// var dateFormat = require('dateFormat');
-var processedData = {};
+// var dateFormat = require("dateFormat");
 
 var currentDate = new Date();
 var currentMonth = false;
@@ -11,7 +9,7 @@ var currentYear = false;
 var currentWeek = false;
 var activeData = {};
 var processedData = {};
-var month_data = {};
+var monthData = {};
 var monthDataByDeck = {};
 
 
@@ -37,12 +35,11 @@ function formatDate(date) {
 	var day = d.getDay();
 
 
-	return [year, week, day].join('-');
+	return [year, week, day].join("-");
 }
 
 function showInfo(data2, tabletop) {
 	// alert("Successfully processed!")
-	console.log('go');
 	data = tabletop.sheets("For App").all();	
 
 	for (index in data){
@@ -56,7 +53,7 @@ function showInfo(data2, tabletop) {
 	buildMonthAverage();
 
 	activeData.monthDataByDeck = monthDataByDeck;
-	write_data_to_file('public/data/historical_data.json', activeData);
+	write_data_to_file("public/data/historical_data.json", activeData);
 }
 
   function write_data_to_file(outputFilename, data){
@@ -131,7 +128,7 @@ function showInfo(data2, tabletop) {
 				continue;
 			}
 
-			// otherwise, it's actually a deck
+			// otherwise, it"s actually a deck
 
 			deck_row = row[deck];
 
@@ -141,49 +138,49 @@ function showInfo(data2, tabletop) {
 				continue;
 			}
 
-			if(typeof month_data[key] == "undefined"){
-				month_data[key] = {'decks' : {}};
+			if(typeof monthData[key] == "undefined"){
+				monthData[key] = {"decks" : {}};
 			}
 
-			if(typeof month_data[key]['decks'][deck] == "undefined"){
-				month_data[key]['decks'][deck] = {'sum' : 0, 'count' : 0, 'values' : {} };
+			if(typeof monthData[key]["decks"][deck] == "undefined"){
+				monthData[key]["decks"][deck] = {"sum" : 0, "count" : 0, "values" : {} };
 			}
 
-			month_data[key]['decks'][deck]['sum'] += value;
-			month_data[key]['decks'][deck]['count']++;
-			month_data[key]['decks'][deck]['values'][row_dy] = row;
+			monthData[key]["decks"][deck]["sum"] += value;
+			monthData[key]["decks"][deck]["count"]++;
+			monthData[key]["decks"][deck]["values"][row_dy] = row;
 		}
 	}
 
 
 
-	for(key in month_data){
-		month = month_data[key];
-		for(deck_key in month['decks']){
-			deck = month['decks'][deck_key];
+	for(key in monthData){
+		month = monthData[key];
+		for(deck_key in month["decks"]){
+			deck = month["decks"][deck_key];
 
-			deck['average'] = deck['sum'] / deck['count'];
+			deck["average"] = deck["sum"] / deck["count"];
 		}
 	}
 
 	// Repeat the loop, build month data
-	for(key in month_data){
-		if(key.indexOf('2015-') !== 0 && key.indexOf('2014-') !== 0){
+	for(key in monthData){
+		if(key.indexOf("2015-") !== 0 && key.indexOf("2014-") !== 0){
 			continue;
 		}
-		month = month_data[key];
-		for(deck_key in month['decks']){
-			deck = month['decks'][deck_key];
+		month = monthData[key];
+		for(deck_key in month["decks"]){
+			deck = month["decks"][deck_key];
 
-			if(typeof monthDataByDeck[deck_key] == 'undefined'){
+			if(typeof monthDataByDeck[deck_key] == "undefined"){
 				monthDataByDeck[deck_key] = {};
 			}
 
-			if(isNaN(deck['average']) ){
+			if(isNaN(deck["average"]) ){
 				continue;
 			}
 
-			monthDataByDeck[deck_key][key] = deck['average'].toFixed(0);
+			monthDataByDeck[deck_key][key] = deck["average"].toFixed(0);
 
 		}
 	}
@@ -230,16 +227,16 @@ function showInfo(data2, tabletop) {
 
 			 	dateString = year+"-"+day;//dateFormat(day, "dddd");
 
-			 	if(typeof activeData[deck]['year_data'] == 'undefined'){
-			 		activeData[deck]['year_data'] = {};
+			 	if(typeof activeData[deck]["year_data"] == "undefined"){
+			 		activeData[deck]["year_data"] = {};
 			 	}
-			 	if(typeof activeData[deck]['year_data'][year] == 'undefined'){
-			 		activeData[deck]['year_data'][year] = {};
+			 	if(typeof activeData[deck]["year_data"][year] == "undefined"){
+			 		activeData[deck]["year_data"][year] = {};
 			 	}
 
 			 	if(value > 0){
 					activeData[deck][dateString] = value.toFixed(2) + "%";
-					activeData[deck]['year_data'][year][day] = (100 - value).toFixed(2);
+					activeData[deck]["year_data"][year][day] = (100 - value).toFixed(2);
 			 	}
 				delete activeData[deck][day];
 				delete activeData[deck][day+"_count"];
@@ -251,7 +248,7 @@ function showInfo(data2, tabletop) {
 
   }
 
-  var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml?gid=809388972&single=true';
+  var public_spreadsheet_url = "https://docs.google.com/spreadsheets/d/19I-P30YkQqO-Um8ab47AaZxzlfJDyuMRr6Iy-ulc_Co/pubhtml?gid=809388972&single=true";
 
 
 var do_data_process = function(){
