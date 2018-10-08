@@ -6,7 +6,7 @@ var keenData = {};
 
 module.exports = {
 	client: false,
-	dataFeedUrl: "https://s3.amazonaws.com/asheville-parking-decks/spaces.json",
+	dataFeedUrl: "http://data.avlpark.com",
 	activeSpacesData: false,
 	io: false,
 	monitorCheckSpaceData(io){

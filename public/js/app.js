@@ -29,7 +29,9 @@ var deckCapacity = {
 	"Civic Center": 550,
 	"Rankin Ave": 262,
 	"Biltmore Ave": 404,
-	"Wall Street": 221 
+	"Wall Street": 221,
+	"11 Sears Ally": 1000,
+	"College Street": 1000
 };
 
 
@@ -144,7 +146,7 @@ function renderKeenData(){
 			};
 			chartData3[deck] = tempData3;
 
-			console.log(deck, deckCapacity[deck]);
+			// console.log(deck, deckCapacity[deck]);
 
 			options3.scaleStepWidth = Math.ceil(deckCapacity[deck]/options3.scaleSteps);
 
@@ -201,8 +203,8 @@ function renderData(){
 	for (deck in activeData){
 		row = activeData[deck];
 
-		score = 10 - parseFloat(row["2015-"+currentDay].replace("%", "")) / 10;
-		score = score.toFixed(1);
+		// score = 10 - parseFloat(row["2015-"+currentDay].replace("%", "")) / 10;
+		// score = score.toFixed(1);
 
 		deck_key = deck;
 		if(deck_key == "Biltmore Ave (Aloft)"){
@@ -242,27 +244,27 @@ function renderData(){
 						html += "<small class='text-center display-block'>Graph of the past hour</small>"
 						html += "<canvas class='chart3' width=\"100%\" height=\"200\"></canvas>";
 					html += "</div>";
-					html += "<div class='parking-deck-footer'>";
-						html += "<small class='text-center display-block'>" + "Max use in previous years</small>";			  		
-						html += "<ul class='year-list'>";
-							i = 0;
-							for(var year in activeData[deck]){
-								if(i++ > 3){
-									break;
-								}
-								if(typeof activeData[deck][year] == 'string'){
-									percent = activeData[deck][year];
-									percent = parseFloat(percent.replace("%", "")).toFixed(0);
-									if(percent > 0){
-										html += "<li>";
-											html += "<p><b>" + year + "</b> : " + percent + "%</p>";
-										html += "</li>";
-									}
-								}
-							}
+					// html += "<div class='parking-deck-footer'>";
+					// 	html += "<small class='text-center display-block'>" + "Max use in previous years</small>";			  		
+					// 	html += "<ul class='year-list'>";
+					// 		i = 0;
+					// 		for(var year in activeData[deck]){
+					// 			if(i++ > 3){
+					// 				break;
+					// 			}
+					// 			if(typeof activeData[deck][year] == 'string'){
+					// 				percent = activeData[deck][year];
+					// 				percent = parseFloat(percent.replace("%", "")).toFixed(0);
+					// 				if(percent > 0){
+					// 					html += "<li>";
+					// 						html += "<p><b>" + year + "</b> : " + percent + "%</p>";
+					// 					html += "</li>";
+					// 				}
+					// 			}
+					// 		}
 
-						html += "</ul>";
-					html +="</div>";			  		
+					// 	html += "</ul>";
+					// html +="</div>";			  		
 				html += "</div>";
 			html += "</div>";	  		
 		html += "</li>";
@@ -409,7 +411,7 @@ function renderData(){
 					strokeColor: "rgba(255, 255, 255, 1.0)",
 					highlightFill: "rgba(255,255,255,0.7)",
 					highlightStroke:  "rgba(255,255,255,1)",
-					data: activeData[deck]['year_data']['2015']
+					data: false //activeData[deck]['year_data']['2015']
 				}
 			]
 		};
@@ -423,7 +425,7 @@ function renderData(){
 					strokeColor: "rgba(100, 255, 100, 1.0)",
 					highlightFill: "rgba(255,255,255,0.7)",
 					highlightStroke:  "rgba(255,255,255,1)",
-					data: monthDataByDeck[deck]
+					data: false //monthDataByDeck[deck]
 				}
 			]
 		};
