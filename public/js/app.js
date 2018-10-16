@@ -30,7 +30,7 @@ var deckCapacity = {
 	"Rankin Ave": 262,
 	"Biltmore Ave": 404,
 	"Wall Street": 221,
-	"11 Sears Ally": 1000,
+	"11 Sears Alley": 1000,
 	"College Street": 1000
 };
 

@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: avlpark
+  name: avlpark
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: avlpark
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: avlpark
+    spec:
+      containers:
+      - env:
+        - name: VIRTUAL_HOST
+          value: avlpark.com*
+        image: conantp/avlpark:latest
+        imagePullPolicy: Always
+        name: avlpark
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+      imagePullSecrets:
+      - name: regcred
+      restartPolicy: Always
