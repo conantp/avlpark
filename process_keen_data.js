@@ -39,8 +39,8 @@ module.exports = {
 			}
 		});
 
-		var interval = setInterval(module.exports.processKeenData, 1 * 60 * 1000);
-		var interval2 = setInterval(module.exports.processWiderKeenData, 60 * 60 * 1000);
+		var interval = setInterval(module.exports.processKeenData, 5 * 60 * 1000);
+		// var interval2 = setInterval(module.exports.processWiderKeenData, 60 * 60 * 1000);
 	},
 
 
