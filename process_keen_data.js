@@ -107,7 +107,6 @@ module.exports = {
 						var keenData = module.exports.convertKeenResultToDataArray(res);
 
 						module.exports.writeKeenDataToFile(keenData, "public/data/keen_data.json");
-
 					}
 					else{
 						console.log("No Keen Data Update");
